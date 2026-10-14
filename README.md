@@ -4,8 +4,6 @@
 
 ![FTL icon](icons/icon128.png)
 
-![FakeTL interface](verification/popup-en.png)
-
 ## Русский
 
 ### Что делает расширение
@@ -25,7 +23,7 @@ FakeTL позволяет выбрать язык и часовой пояс, к
 
 При обновлении замените файлы в той же папке и нажмите **обновление расширения** в `chrome://extensions`, затем перезагрузите сайты. Существующие настройки сохраняются. Настройки версий 1.0/1.1 автоматически получают режим «везде, кроме списка» с пустым списком; выбранные зона и языки сохраняются.
 
-Версия **1.2.1** добавляет лаконичную иконку **FTL** в лавандово-бирюзовой палитре для панели Chrome и карточки расширения. Релиз содержит ZIP и файл SHA-256. [История изменений](CHANGELOG.md). Исходник — `icons/ftl.svg`, готовые PNG — 16/32/48/128 пикселей. Chrome использует PNG; SVG включён для редактирования. Для повторной генерации разработчиком: `python tools/generate-icons.py` (Pillow); для установки расширения Python не требуется.
+Версия **1.2.1** добавляет лаконичную иконку **FTL** в лавандово-бирюзовой палитре для панели Chrome и карточки расширения. Релиз содержит ZIP и файл SHA-256. [История изменений](CHANGELOG.md). Исходник — `icons/ftl.svg`, готовые PNG — 16/32/48/128 пикселей. Chrome использует PNG; SVG включён для редактирования.
 
 ### Язык, время и интерфейс
 
@@ -53,7 +51,7 @@ example.com
 https://news.example.org/article
 ```
 
-Адрес из второго примера сохраняется как `news.example.org`: **путь, порт, протокол и параметры не различаются**. Домен `example.com` включает `www.example.com`, `shop.example.com` и другие его поддомены, но не `notexample.com` или `example.com.other.test`. `www.example.com` — более узкая запись; основной `example.com` в неё не входит. Unicode-домены нормализуются в ASCII/punycode. Поддержаны домены, `localhost` и IPv4; IPv6-литералы, маски `*.example.com`, адреса с логином/паролем и не-HTTP(S) схемы не принимаются. До 100 записей; повторы удаляются.
+Адрес из второго примера сохраняется как `news.example.org`: **путь, порт, протокол и параметры не различаются**. Домен `example.com` включает `www.example.com`, `shop.example.com` и другие его поддомены, но не `notexample.com` или `example.com.other.org`. `www.example.com` — более узкая запись; основной `example.com` в неё не входит. Unicode-домены нормализуются в ASCII/punycode. Поддержаны домены, `localhost` и IPv4; IPv6-литералы, маски `*.example.com`, адреса с логином/паролем и не-HTTP(S) схемы не принимаются. До 100 записей; повторы удаляются.
 
 Кнопка **«Добавить текущий сайт»** добавляет домен активной HTTP/HTTPS-вкладки. Проверьте список, нажмите **«Сохранить»** и перезагрузите страницы.
 
@@ -92,31 +90,6 @@ https://news.example.org/article
 
 Подмена обнаружима и может быть изменена или обойдена кодом страницы/другим realm. Она не меняет IP, геолокацию, язык Chrome или системные настройки и не гарантирует анонимность. Отозванный доступ к сайту, политика организации и другие расширения могут мешать применению.
 
-### Проверка
-
-Node.js 20+ нужен только для сервера и тестов:
-
-```powershell
-node test-site/server.js
-node --test tests/*.test.js
-```
-
-Откройте `http://127.0.0.1:8787/` в Chrome с расширением: сервер показывает фактически полученный Accept-Language, обычная HTTP-страница — первый inline-скрипт, Date/Intl/navigator, iframe и workers. `/?csp=1` включает тестовую CSP; `/records` содержит последние запросы. Проверьте UTC + en-US/en, Москву и Нью-Йорк зимой/летом, явные параметры, выключение и оба режима сайтов.
-
-Опциональный интеграционный тест использует Playwright только для управления настоящим расширением:
-
-```powershell
-npm install --no-save --package-lock=false playwright-core
-$env:CHROME_PATH = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
-node tests/browser.mjs
-node tests/summarize.mjs
-```
-
-В комплектной среде Codex используется имеющийся Playwright; для другого пути можно задать `PLAYWRIGHT_MODULE` с абсолютным путём к `playwright-core/index.mjs`. Тест создаёт отдельный `.test-profile/<timestamp>`, а домены `*.test` направляет на локальный сервер через DNS-настройку только тестового Chrome. **Эмуляция языка, зоны или Accept-Language не используется**. Основной профиль Chrome не меняется. После завершения временный профиль можно удалить; архив создаётся `python tests/package.py` и не включает профили/зависимости.
-
-**Фактически проверено 14 октября 2026:** Windows, Chrome 155.0.8059.40, FakeTL 1.2.1. Прошли 18 модульных тестов и 19 браузерных сценариев, включая исходные проверки, флаги RU/EN, оба режима сайтов, поддомены, сторонние запросы и iframe без Referer, пустой список включённых сайтов, добавление текущего сайта и сохранение списка. Подтверждены реальные заголовки навигации/fetch/скриптов, ранний inline-код, DST, сохранность timestamps/UTC, явные options и работа после остановки фонового worker. Отчёты: [summary](verification/browser-summary.json), [full report](verification/browser-report.json).
-
-**Не проверено полностью:** автоматический холодный запуск обычной установки через UI. Chrome действительно закрывался и запускался, настройки сохранились, но сессионную CDP-установку пришлось загрузить повторно. Отдельные HTTPS-проверки, Chrome 145, инкогнито, аварийное завершение, реальные обновления/отзыв разрешений, все sandbox/CSP/предварительно созданные документы и исторические зоны также не проверены. Нативное окно browser action визуально не проверено: тест открывает поставляемый popup.html во вкладке расширения. Границы workers, Temporal и data-фреймов фактически проверены и зафиксированы.
 
 ## English
 
@@ -137,7 +110,7 @@ This Manifest V3 extension uses JavaScript, HTML and CSS. Its runtime needs no b
 
 To update, replace files in the same folder, click the extension’s **reload/update** button in `chrome://extensions`, then reload websites. Preferences are preserved. Settings from versions 1.0/1.1 migrate to “everywhere except the list” with an empty list, preserving the selected time zone and languages.
 
-Version **1.2.1** adds a minimal **FTL** icon in a lavender/teal palette for the Chrome toolbar and extension card. The release includes a ZIP and a SHA-256 file. [Changelog](CHANGELOG.md). Source: `icons/ftl.svg`; committed PNGs: 16/32/48/128 pixels. Chrome uses PNG; the SVG is provided for editing. Developers can regenerate them with `python tools/generate-icons.py` (Pillow); installing the extension needs no Python.
+Version **1.2.1** adds a minimal **FTL** icon in a lavender/teal palette for the Chrome toolbar and extension card. The release includes a ZIP and a SHA-256 file. [Changelog](CHANGELOG.md). Source: `icons/ftl.svg`; committed PNGs: 16/32/48/128 pixels. Chrome uses PNG; the SVG is provided for editing.
 
 ### Language, time and interface
 
@@ -165,7 +138,7 @@ example.com
 https://news.example.org/article
 ```
 
-The second entry is saved as `news.example.org`: **paths, ports, protocols and query parameters are not distinguished**. `example.com` includes `www.example.com`, `shop.example.com` and other subdomains, but not `notexample.com` or `example.com.other.test`. `www.example.com` is narrower and does not include its parent `example.com`. Unicode domains become ASCII/punycode. Domains, localhost and IPv4 are supported; IPv6 literals, wildcards such as `*.example.com`, URLs containing credentials and non-HTTP(S) schemes are rejected. Up to 100 entries; duplicates are removed.
+The second entry is saved as `news.example.org`: **paths, ports, protocols and query parameters are not distinguished**. `example.com` includes `www.example.com`, `shop.example.com` and other subdomains, but not `notexample.com` or `example.com.other.org`. `www.example.com` is narrower and does not include its parent `example.com`. Unicode domains become ASCII/punycode. Domains, localhost and IPv4 are supported; IPv6 literals, wildcards such as `*.example.com`, URLs containing credentials and non-HTTP(S) schemes are rejected. Up to 100 entries; duplicates are removed.
 
 **Add current website** inserts the domain of the active HTTP/HTTPS tab. Review the list, click **Save**, then reload pages.
 
@@ -177,7 +150,7 @@ Rules apply to **the website in the address bar**, including its accessible ifra
 - Uses the selected zone in Intl DateTimeFormat/resolvedOptions, Date getTimezoneOffset, local getters, toString/toDateString/toTimeString, the three toLocale methods, local setters, numeric Date construction and standard ISO date-time strings with `T` but no zone.
 - Changes default locales in Number/BigInt toLocaleString and String localeCompare/toLocaleLowerCase/toLocaleUpperCase.
 - Preserves explicit options: Intl.NumberFormat("de-DE") remains German; an explicit timeZone "Asia/Tokyo" remains Tokyo. Date.now, timestamps, getTime, valueOf, toISOString, Date.UTC and UTC methods retain their semantics. ISO date-only strings remain UTC.
-- Calculates offsets with the original Intl for each instant, including DST. Overlaps choose the first occurrence; gaps move forward by the gap size. Invalid Date, exception types, argument coercion, Date subclassing and Date range boundaries are preserved and tested; original methods are captured before patching.
+- Calculates offsets with the original Intl for each instant, including DST. Overlaps choose the first occurrence; gaps move forward by the gap size. Invalid Date, exception types, argument coercion, Date subclassing and Date range boundaries are preserved; original methods are captured before patching.
 
 The background service worker pre-registers one `chrome.userScripts` script in **MAIN world**, at **document_start**, in all accessible HTTP/HTTPS frames. Validated settings JSON is inserted as an argument to the packaged main.js function. Page loading does not wait for storage, messages or worker startup; no eval/Function is used. The JavaScript filter reads the top-level site synchronously from location.ancestorOrigins, independently of Referer. The network filter uses the same domains in a dynamic DNR rule with the `set` operation.
 
@@ -204,31 +177,6 @@ No additional tabs, activeTab, scripting, webRequest or DNR feedback permission 
 
 Spoofing is detectable and can be changed or bypassed by page code or another realm. It does not change IP, geolocation, Chrome language or OS preferences and does not guarantee anonymity. Revoked site access, organization policy and other extensions can interfere with application.
 
-### Verification
-
-Node.js 20+ is only needed for the test server and tests:
-
-```powershell
-node test-site/server.js
-node --test tests/*.test.js
-```
-
-Open `http://127.0.0.1:8787/` in Chrome with FakeTL. The server displays the actual received Accept-Language; the ordinary HTTP page probes the first inline script, Date/Intl/navigator, frames and workers. `/?csp=1` enables test CSP; `/records` shows recent requests. Check UTC + en-US/en, Moscow/New York winter/summer, explicit options, disabling, and both website modes.
-
-The optional integration test uses Playwright only to control the actual extension:
-
-```powershell
-npm install --no-save --package-lock=false playwright-core
-$env:CHROME_PATH = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
-node tests/browser.mjs
-node tests/summarize.mjs
-```
-
-Codex’s bundled environment can use the existing Playwright; set PLAYWRIGHT_MODULE to an absolute playwright-core/index.mjs path elsewhere. The test uses an isolated `.test-profile/<timestamp>` and maps `*.test` to the local server only in that test Chrome’s DNS configuration. **No language, time-zone or Accept-Language emulation is used.** The main Chrome profile is untouched. Temporary test profiles can be deleted after completion. `python tests/package.py` creates an archive without profiles or dependencies.
-
-**Actually verified on October 14, 2026:** Windows, Chrome 155.0.8059.40, FakeTL 1.2.1. All 18 unit tests and 19 browser scenarios passed, including the original checks, RU/EN flags, both website modes, subdomains, third-party requests and frames without Referer, empty include lists, adding the current site and list persistence. Real navigation/fetch/script headers, early inline execution, DST, timestamps/UTC, explicit options and behavior while the background worker remains stopped were confirmed. Reports: [summary](verification/browser-summary.json), [full report](verification/browser-report.json).
-
-**Not fully verified:** automatic cold startup of a normal UI-installed unpacked extension. Chrome was closed and restarted, and preferences survived, but the session-only CDP installation needed loading again. Separate HTTPS tests, Chrome 145, incognito, crashes, real updates/permission revocation, all sandbox/CSP/pre-created documents and historical zones remain unverified. The native browser action window was not visually tested; the test opens the shipped popup.html in an extension tab. Worker, Temporal and data-frame boundaries were actually probed and recorded.
 
 ## Official references / Официальные источники
 
@@ -237,4 +185,3 @@ Codex’s bundled environment can use the existing Playwright; set PLAYWRIGHT_MO
 - [Chrome content scripts](https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts) and [manifest content_scripts](https://developer.chrome.com/docs/extensions/reference/manifest/content-scripts): related frames and execution timing.
 - [HTML Standard: Location.ancestorOrigins](https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-location-ancestororigins): synchronous ancestor origins.
 
-![Website controls](verification/popup-sites-en.png)

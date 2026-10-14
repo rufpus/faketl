@@ -1,8 +1,2 @@
-node_modules/
-.test-profile/
-.test-browser/
-test-results/
 *.zip
-releases/*.sha256
-__pycache__/
-extension-setup-debug.html
+releases/
