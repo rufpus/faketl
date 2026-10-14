@@ -1,9 +1,9 @@
-(() => {
+((injectedConfig) => {
   'use strict';
   const key = Symbol.for('locale-timezone/config/v1');
   const installed = Symbol.for('locale-timezone/installed/v1');
   if (globalThis[installed]) return;
-  let config = globalThis[key];
+  let config = injectedConfig;
   // userScripts has no matchOriginAsFallback option. The static MAIN script
   // handles accessible related frames by synchronously reading the parent's
   // public, immutable configuration. Opaque origins cannot use this path.
@@ -14,7 +14,23 @@
     }
   }
   if (!config?.enabled) return;
-  config = Object.freeze({enabled: true, timeZone: config.timeZone, languages: Object.freeze([...config.languages])});
+  // Match the top-level site, including cross-origin iframes. ancestorOrigins
+  // is synchronous and independent of document.referrer/referrer policies.
+  let siteHost = config.siteHost || '';
+  try {
+    const origins = location.ancestorOrigins;
+    if (origins?.length) siteHost = new URL(origins[origins.length - 1]).hostname;
+    else if (/^https?:$/.test(location.protocol)) siteHost = location.hostname;
+  } catch { siteHost = ''; }
+  siteHost = siteHost.toLowerCase().replace(/\.$/, '');
+  const sites = config.sites || [];
+  const siteMode = config.siteMode || 'exclude';
+  const listed = sites.some(domain => siteHost === domain || siteHost.endsWith('.' + domain));
+  if (sites.length && !siteHost) return; // Unknown top-level origin: preserve originals.
+  if (siteMode === 'include' ? !listed : listed) return;
+  // Public state is limited to the applied profile for related-frame inheritance.
+  // The allow/exception list stays inside this synchronous function invocation.
+  config = Object.freeze({enabled: true, timeZone: config.timeZone, languages: Object.freeze([...config.languages]), siteHost});
 
   const NativeDate = Date;
   const NativeDTF = Intl.DateTimeFormat;
@@ -267,4 +283,4 @@
   }
   Object.defineProperty(globalThis, key, {value: config, configurable: false, writable: false});
   Object.defineProperty(globalThis, installed, {value: true, configurable: false, writable: false});
-})();
+})(/*FAKETL_CONFIG*/ undefined);

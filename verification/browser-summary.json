@@ -4,7 +4,7 @@
   "extensionActuallyLoaded": true,
   "timezoneOrLocaleEmulationUsed": false,
   "unitTests": {
-    "passed": 13,
+    "passed": 18,
     "command": "node --test tests/*.test.js"
   },
   "browserError": null,
@@ -98,15 +98,6 @@
           ],
           "zone": "UTC"
         },
-        "iframe другой origin": {
-          "language": "en-US",
-          "languages": [
-            "en-US",
-            "en"
-          ],
-          "zone": "UTC",
-          "hours": 12
-        },
         "srcdoc": {
           "language": "en-US",
           "languages": [
@@ -133,6 +124,15 @@
             "en"
           ],
           "zone": "Europe/Moscow"
+        },
+        "iframe другой origin": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "UTC",
+          "hours": 12
         },
         "blob:": {
           "language": "en-US",
@@ -179,9 +179,9 @@
         "setter": "2026-03-08T02:30:00.000Z",
         "parse": 12,
         "number": "1,234.5",
-        "originalTime": 1791983631886,
-        "clockDifference": 0.49995116889476776,
-        "string": "Wed Oct 14 2026 13:13:51 GMT+0000 (Coordinated Universal Time)",
+        "originalTime": 1791986050760,
+        "clockDifference": 0.39995117485523224,
+        "string": "Wed Oct 14 2026 13:54:10 GMT+0000 (Coordinated Universal Time)",
         "temporal": "Europe/Moscow",
         "calendarAgreement": true
       }
@@ -280,14 +280,6 @@
           ],
           "zone": "UTC"
         },
-        "srcdoc": {
-          "language": "en-US",
-          "languages": [
-            "en-US",
-            "en"
-          ],
-          "zone": "UTC"
-        },
         "iframe другой origin": {
           "language": "en-US",
           "languages": [
@@ -296,6 +288,14 @@
           ],
           "zone": "UTC",
           "hours": 12
+        },
+        "srcdoc": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "UTC"
         },
         "iframe HTTP": {
           "language": "en-US",
@@ -361,9 +361,9 @@
         "setter": "2026-03-08T02:30:00.000Z",
         "parse": 12,
         "number": "1,234.5",
-        "originalTime": 1791983633829,
-        "clockDifference": 0.7000488340854645,
-        "string": "Wed Oct 14 2026 13:13:53 GMT+0000 (Coordinated Universal Time)",
+        "originalTime": 1791986053935,
+        "clockDifference": 0.3999999910593033,
+        "string": "Wed Oct 14 2026 13:54:13 GMT+0000 (Coordinated Universal Time)",
         "temporal": "Europe/Moscow",
         "calendarAgreement": true
       }
@@ -453,6 +453,15 @@
           ],
           "zone": "Europe/Moscow"
         },
+        "iframe другой origin": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow",
+          "hours": 15
+        },
         "srcdoc": {
           "language": "en-US",
           "languages": [
@@ -462,15 +471,6 @@
           "zone": "Europe/Moscow"
         },
         "iframe HTTP": {
-          "language": "en-US",
-          "languages": [
-            "en-US",
-            "en"
-          ],
-          "zone": "Europe/Moscow",
-          "hours": 15
-        },
-        "iframe другой origin": {
           "language": "en-US",
           "languages": [
             "en-US",
@@ -503,14 +503,6 @@
         "zone": "Europe/Moscow"
       },
       "workers": {
-        "service": {
-          "language": "ru-RU",
-          "zone": "Europe/Moscow",
-          "temporal": {
-            "available": true,
-            "zone": "Europe/Moscow"
-          }
-        },
         "dedicated": {
           "language": "ru-RU",
           "zone": "Europe/Moscow",
@@ -526,6 +518,14 @@
             "available": true,
             "zone": "Europe/Moscow"
           }
+        },
+        "service": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
         }
       },
       "additionalChecks": {
@@ -534,9 +534,9 @@
         "setter": "2026-03-07T23:30:00.000Z",
         "parse": 12,
         "number": "1,234.5",
-        "originalTime": 1791983634738,
-        "clockDifference": 0.9999023526906967,
-        "string": "Wed Oct 14 2026 16:13:54 GMT+0300 (Moscow Standard Time)",
+        "originalTime": 1791986056747,
+        "clockDifference": 0.09999999403953552,
+        "string": "Wed Oct 14 2026 16:54:16 GMT+0300 (Moscow Standard Time)",
         "temporal": "Europe/Moscow",
         "calendarAgreement": true
       }
@@ -707,9 +707,9 @@
         "setter": "2026-03-08T07:30:00.000Z",
         "parse": 12,
         "number": "1,234.5",
-        "originalTime": 1791983635686,
-        "clockDifference": 0.699999988079071,
-        "string": "Wed Oct 14 2026 09:13:55 GMT-0400 (Eastern Daylight Time)",
+        "originalTime": 1791986058666,
+        "clockDifference": 0.9000488221645355,
+        "string": "Wed Oct 14 2026 09:54:18 GMT-0400 (Eastern Daylight Time)",
         "temporal": "Europe/Moscow",
         "calendarAgreement": true
       }
@@ -880,9 +880,9 @@
         "setter": "2026-03-08T07:30:00.000Z",
         "parse": 12,
         "number": "1,234.5",
-        "originalTime": 1791983636065,
-        "clockDifference": 0.09990233182907104,
-        "string": "Wed Oct 14 2026 09:13:56 GMT-0400 (Eastern Daylight Time)",
+        "originalTime": 1791986059074,
+        "clockDifference": 0.20009765028953552,
+        "string": "Wed Oct 14 2026 09:54:19 GMT-0400 (Eastern Daylight Time)",
         "temporal": "Europe/Moscow",
         "calendarAgreement": true
       }
@@ -1053,9 +1053,9 @@
         "setter": "2026-03-08T07:30:00.000Z",
         "parse": 12,
         "number": "1,234.5",
-        "originalTime": 1791983638349,
-        "clockDifference": 0.20004881918430328,
-        "string": "Wed Oct 14 2026 09:13:58 GMT-0400 (Eastern Daylight Time)",
+        "originalTime": 1791986064678,
+        "clockDifference": 0.9000000059604645,
+        "string": "Wed Oct 14 2026 09:54:24 GMT-0400 (Eastern Daylight Time)",
         "temporal": "Europe/Moscow",
         "calendarAgreement": true
       }
@@ -1100,6 +1100,393 @@
         ]
       ],
       "headerReceivedByServer": "de-DE,de;q=0.9"
+    },
+    {
+      "name": "Exception: main/third-party/frame preserve originals",
+      "siteScopeChecks": {
+        "host": "alpha.test",
+        "spoofed": false,
+        "result": {
+          "early": {
+            "language": "ru-RU",
+            "languages": [
+              "ru-RU",
+              "ru",
+              "en-US",
+              "en"
+            ],
+            "zone": "Europe/Moscow",
+            "hours": 15
+          },
+          "navigationHeader": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+          "http": {
+            "path": "/echo?kind=scope-main",
+            "host": "alpha.test:8787",
+            "acceptLanguage": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+          },
+          "thirdParty": {
+            "path": "/echo?kind=scope-third-party",
+            "host": "assets.test:8787",
+            "acceptLanguage": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+          },
+          "frame": {
+            "type": "scope-frame",
+            "early": {
+              "language": "ru-RU",
+              "languages": [
+                "ru-RU",
+                "ru",
+                "en-US",
+                "en"
+              ],
+              "zone": "Europe/Moscow",
+              "hours": 15
+            },
+            "http": {
+              "path": "/echo?kind=scope-frame",
+              "host": "assets.test:8787",
+              "acceptLanguage": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Exception applies to subdomains",
+      "siteScopeChecks": {
+        "host": "sub.alpha.test",
+        "spoofed": false,
+        "result": {
+          "early": {
+            "language": "ru-RU",
+            "languages": [
+              "ru-RU",
+              "ru",
+              "en-US",
+              "en"
+            ],
+            "zone": "Europe/Moscow",
+            "hours": 15
+          },
+          "navigationHeader": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+          "http": {
+            "path": "/echo?kind=scope-main",
+            "host": "sub.alpha.test:8787",
+            "acceptLanguage": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+          },
+          "thirdParty": {
+            "path": "/echo?kind=scope-third-party",
+            "host": "assets.test:8787",
+            "acceptLanguage": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+          },
+          "frame": {
+            "type": "scope-frame",
+            "early": {
+              "language": "ru-RU",
+              "languages": [
+                "ru-RU",
+                "ru",
+                "en-US",
+                "en"
+              ],
+              "zone": "Europe/Moscow",
+              "hours": 15
+            },
+            "http": {
+              "path": "/echo?kind=scope-frame",
+              "host": "assets.test:8787",
+              "acceptLanguage": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Unlisted website still spoofed",
+      "siteScopeChecks": {
+        "host": "beta.test",
+        "spoofed": true,
+        "result": {
+          "early": {
+            "language": "en-US",
+            "languages": [
+              "en-US",
+              "en"
+            ],
+            "zone": "UTC",
+            "hours": 12
+          },
+          "navigationHeader": "en-US,en;q=0.9",
+          "http": {
+            "path": "/echo?kind=scope-main",
+            "host": "beta.test:8787",
+            "acceptLanguage": "en-US,en;q=0.9"
+          },
+          "thirdParty": {
+            "path": "/echo?kind=scope-third-party",
+            "host": "assets.test:8787",
+            "acceptLanguage": "en-US,en;q=0.9"
+          },
+          "frame": {
+            "type": "scope-frame",
+            "early": {
+              "language": "en-US",
+              "languages": [
+                "en-US",
+                "en"
+              ],
+              "zone": "UTC",
+              "hours": 12
+            },
+            "http": {
+              "path": "/echo?kind=scope-frame",
+              "host": "assets.test:8787",
+              "acceptLanguage": "en-US,en;q=0.9"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Include: main/third-party/frame spoofed",
+      "siteScopeChecks": {
+        "host": "alpha.test",
+        "spoofed": true,
+        "result": {
+          "early": {
+            "language": "en-US",
+            "languages": [
+              "en-US",
+              "en"
+            ],
+            "zone": "UTC",
+            "hours": 12
+          },
+          "navigationHeader": "en-US,en;q=0.9",
+          "http": {
+            "path": "/echo?kind=scope-main",
+            "host": "alpha.test:8787",
+            "acceptLanguage": "en-US,en;q=0.9"
+          },
+          "thirdParty": {
+            "path": "/echo?kind=scope-third-party",
+            "host": "assets.test:8787",
+            "acceptLanguage": "en-US,en;q=0.9"
+          },
+          "frame": {
+            "type": "scope-frame",
+            "early": {
+              "language": "en-US",
+              "languages": [
+                "en-US",
+                "en"
+              ],
+              "zone": "UTC",
+              "hours": 12
+            },
+            "http": {
+              "path": "/echo?kind=scope-frame",
+              "host": "assets.test:8787",
+              "acceptLanguage": "en-US,en;q=0.9"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Include applies to subdomains",
+      "siteScopeChecks": {
+        "host": "sub.alpha.test",
+        "spoofed": true,
+        "result": {
+          "early": {
+            "language": "en-US",
+            "languages": [
+              "en-US",
+              "en"
+            ],
+            "zone": "UTC",
+            "hours": 12
+          },
+          "navigationHeader": "en-US,en;q=0.9",
+          "http": {
+            "path": "/echo?kind=scope-main",
+            "host": "sub.alpha.test:8787",
+            "acceptLanguage": "en-US,en;q=0.9"
+          },
+          "thirdParty": {
+            "path": "/echo?kind=scope-third-party",
+            "host": "assets.test:8787",
+            "acceptLanguage": "en-US,en;q=0.9"
+          },
+          "frame": {
+            "type": "scope-frame",
+            "early": {
+              "language": "en-US",
+              "languages": [
+                "en-US",
+                "en"
+              ],
+              "zone": "UTC",
+              "hours": 12
+            },
+            "http": {
+              "path": "/echo?kind=scope-frame",
+              "host": "assets.test:8787",
+              "acceptLanguage": "en-US,en;q=0.9"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Unlisted website original in include mode",
+      "siteScopeChecks": {
+        "host": "beta.test",
+        "spoofed": false,
+        "result": {
+          "early": {
+            "language": "ru-RU",
+            "languages": [
+              "ru-RU",
+              "ru",
+              "en-US",
+              "en"
+            ],
+            "zone": "Europe/Moscow",
+            "hours": 15
+          },
+          "navigationHeader": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+          "http": {
+            "path": "/echo?kind=scope-main",
+            "host": "beta.test:8787",
+            "acceptLanguage": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+          },
+          "thirdParty": {
+            "path": "/echo?kind=scope-third-party",
+            "host": "assets.test:8787",
+            "acceptLanguage": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+          },
+          "frame": {
+            "type": "scope-frame",
+            "early": {
+              "language": "ru-RU",
+              "languages": [
+                "ru-RU",
+                "ru",
+                "en-US",
+                "en"
+              ],
+              "zone": "Europe/Moscow",
+              "hours": 15
+            },
+            "http": {
+              "path": "/echo?kind=scope-frame",
+              "host": "assets.test:8787",
+              "acceptLanguage": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Empty include list affects no websites",
+      "siteScopeChecks": {
+        "host": "alpha.test",
+        "spoofed": false,
+        "result": {
+          "early": {
+            "language": "ru-RU",
+            "languages": [
+              "ru-RU",
+              "ru",
+              "en-US",
+              "en"
+            ],
+            "zone": "Europe/Moscow",
+            "hours": 15
+          },
+          "navigationHeader": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+          "http": {
+            "path": "/echo?kind=scope-main",
+            "host": "alpha.test:8787",
+            "acceptLanguage": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+          },
+          "thirdParty": {
+            "path": "/echo?kind=scope-third-party",
+            "host": "assets.test:8787",
+            "acceptLanguage": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+          },
+          "frame": {
+            "type": "scope-frame",
+            "early": {
+              "language": "ru-RU",
+              "languages": [
+                "ru-RU",
+                "ru",
+                "en-US",
+                "en"
+              ],
+              "zone": "Europe/Moscow",
+              "hours": 15
+            },
+            "http": {
+              "path": "/echo?kind=scope-frame",
+              "host": "assets.test:8787",
+              "acceptLanguage": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Add current website",
+      "siteScopeChecks": {
+        "host": "alpha.test",
+        "spoofed": true,
+        "result": {
+          "early": {
+            "language": "en-US",
+            "languages": [
+              "en-US",
+              "en"
+            ],
+            "zone": "UTC",
+            "hours": 12
+          },
+          "navigationHeader": "en-US,en;q=0.9",
+          "http": {
+            "path": "/echo?kind=scope-main",
+            "host": "alpha.test:8787",
+            "acceptLanguage": "en-US,en;q=0.9"
+          },
+          "thirdParty": {
+            "path": "/echo?kind=scope-third-party",
+            "host": "assets.test:8787",
+            "acceptLanguage": "en-US,en;q=0.9"
+          },
+          "frame": {
+            "type": "scope-frame",
+            "early": {
+              "language": "en-US",
+              "languages": [
+                "en-US",
+                "en"
+              ],
+              "zone": "UTC",
+              "hours": 12
+            },
+            "http": {
+              "path": "/echo?kind=scope-frame",
+              "host": "assets.test:8787",
+              "acceptLanguage": "en-US,en;q=0.9"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Site mode and list persist after popup reopen"
     },
     {
       "name": "Disabled and reloaded",
@@ -1203,6 +1590,16 @@
           "zone": "Europe/Moscow",
           "hours": 15
         },
+        "srcdoc": {
+          "language": "ru-RU",
+          "languages": [
+            "ru-RU",
+            "ru",
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow"
+        },
         "iframe другой origin": {
           "language": "ru-RU",
           "languages": [
@@ -1213,16 +1610,6 @@
           ],
           "zone": "Europe/Moscow",
           "hours": 15
-        },
-        "srcdoc": {
-          "language": "ru-RU",
-          "languages": [
-            "ru-RU",
-            "ru",
-            "en-US",
-            "en"
-          ],
-          "zone": "Europe/Moscow"
         },
         "data:": {
           "language": "ru-RU",

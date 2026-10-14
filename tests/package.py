@@ -7,7 +7,7 @@ files = [root / name for name in (
     'manifest.json', 'background.js', 'settings.js', 'main.js',
     'popup.html', 'popup.css', 'popup.js', 'i18n.js', 'README.md', 'package.json', '.gitignore'
 )]
-for folder in ('test-site', 'tests', 'verification'):
+for folder in ('icons', 'test-site', 'tests', 'verification'):
     files.extend(p for p in (root / folder).rglob('*') if p.is_file() and '__pycache__' not in p.parts)
 archive = root / 'FakeTL.zip'
 with ZipFile(archive, 'w', ZIP_DEFLATED) as z:

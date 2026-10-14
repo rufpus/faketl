@@ -1,158 +1,234 @@
 # FakeTL — FakeTimeLanguage
 
-Приватный репозиторий: [rufpus/faketl](https://github.com/rufpus/faketl). Интерфейс расширения доступен на русском и английском; [English quickstart](#english-quickstart).
+[Русский](#русский) · [English](#english) · [Source](https://github.com/rufpus/faketl)
 
-Работающее распакованное расширение **Google Chrome 138+**, Manifest V3. JavaScript, HTML и CSS; для самого расширения не нужны сборка, Node.js, npm-пакеты или подключение к внешним сервисам.
+![FakeTL interface](verification/popup-en.png)
 
-Начальные настройки: подмена включена, `UTC`, языки `en-US`, `en`. Для этой конфигурации HTTP-заголовок равен `Accept-Language: en-US,en;q=0.9`.
+## Русский
 
-## Установка
+### Что делает расширение
 
-1. Распакуйте архив, если используете ZIP. Папка должна содержать `manifest.json`, `background.js`, `settings.js`, `main.js`, `i18n.js` и файлы popup.
-2. Откройте `chrome://extensions`, включите **«Режим разработчика»**.
-3. Нажмите **«Загрузить распакованное расширение»**, выберите эту папку с `manifest.json`.
-4. В карточке расширения откройте **«Подробнее»** и включите **«Разрешить пользовательские скрипты»**. Это отдельный переключатель Chrome 138+. До его включения popup сообщает, что применение не подтверждено.
-5. В разделе доступа к сайтам разрешите работу на всех сайтах, которые хотите подменять. Для заявленной глобальной области действия нужен доступ ко всем HTTP/HTTPS-сайтам.
-6. Откройте popup, нажмите **«Сохранить и применить»**, дождитесь подтверждения и перезагрузите страницы. При необходимости закрепите расширение на панели инструментов.
+FakeTL позволяет выбрать язык и часовой пояс, которые сайты получают через поддерживаемые JavaScript API и HTTP-заголовок `Accept-Language`. Например, при русских настройках компьютера и UTC+3 можно выбрать `UTC` и языки `en-US`, `en`: после перезагрузки поддерживаемые интерфейсы сайта покажут эту конфигурацию, а сервер получит `Accept-Language: en-US,en;q=0.9`.
 
-В popup есть включение подмены, поиск и выбор зоны, основной язык и остальные языки по приоритету, активная конфигурация и кнопка перезагрузки текущей страницы. Языки вводятся через запятую или по одному на строку. Проверка через `Intl.getCanonicalLocales` нормализует регистр и удаляет дубликаты; допускается 1–10 поддерживаемых Chrome тегов BCP 47. Расширение не добавляет исходные языки браузера. Качества остальных языков: `0.9`, `0.8`, …, `0.1`.
+Это расширение Manifest V3 на JavaScript, HTML и CSS. Сборщик, внешние зависимости, удалённый код, телеметрия и внешние сервисы для его работы не нужны. **Требуется Chrome 145+**: фильтрация сетевых запросов по сайту в адресной строке использует `topDomains` / `excludedTopDomains`, доступные с версии 145.
 
-В списке зон показаны название на выбранном языке интерфейса, идентификатор IANA и смещение **на текущую дату**. Для региональной зоны оно может меняться. Постоянное UTC+0 — **`UTC`**. `Europe/London` летом обычно имеет другое смещение.
+### Установка и обновление
 
-Селектор **«Интерфейс / Interface»** в шапке переключает popup между **Русский** и **English**. Язык интерфейса сразу сохраняется отдельно как `uiLanguage` в `chrome.storage.local`; кнопка сохранения и перезагрузка сайтов для этого не нужны. Переводятся подписи, поиск и названия зон, подсказки, статусы и сообщения об ошибках приложения. Изменение интерфейса сохраняет введённые несохранённые настройки и не меняет `navigator.languages`/Accept-Language сайтов. После обновления расширения существующие настройки зон и языков сохраняются.
+1. Скачайте проект через **Code → Download ZIP** или распакуйте `FakeTL.zip`. В выбранной папке должны находиться `manifest.json`, файлы `.js`, `popup.html`, `popup.css` и каталог `icons`.
+2. Откройте `chrome://extensions` и включите **«Режим разработчика»**.
+3. Нажмите **«Загрузить распакованное расширение»**, выберите папку с `manifest.json`.
+4. В карточке FakeTL нажмите **«Подробнее»** и включите **«Разрешить пользовательские скрипты»**. Без этого доступа popup сообщит, что применение не подтверждено.
+5. Разрешите доступ к сайтам, на которых хотите использовать FakeTL. Для режима «везде, кроме списка» нужен доступ ко всем нужным HTTP/HTTPS-сайтам. При желании закрепите FakeTL на панели инструментов.
+6. Откройте FakeTL, настройте профиль, нажмите **«Сохранить»**, дождитесь подтверждения и перезагрузите открытые страницы.
 
-После редактирования исходных файлов нажмите кнопку обновления расширения в `chrome://extensions`; простого обновления страницы сайта недостаточно для обновления кэшированного фонового кода.
+При обновлении замените файлы в той же папке и нажмите **обновление расширения** в `chrome://extensions`, затем перезагрузите сайты. Существующие настройки сохраняются. Настройки версий 1.0/1.1 автоматически получают режим «везде, кроме списка» с пустым списком; выбранные зона и языки сохраняются.
 
-## Как применяются настройки до скриптов сайта
+### Язык, время и интерфейс
 
-`chrome.storage.local` хранит нормализованные настройки постоянно. Фоновый service worker читает их при установке, запуске и сохранении. Он заранее регистрирует **один скрипт `chrome.userScripts`** с `world: "MAIN"`, `runAt: "document_start"`, `allFrames: true`.
+- Общий переключатель включает или выключает подмену. Изменение начинает действовать после **«Сохранить»** и перезагрузки страниц.
+- Вкладка **«Язык и время»** содержит поиск и список зон IANA, например `UTC`, `Europe/Moscow`, `Europe/Berlin`, `America/New_York`, `Asia/Tokyo`. Указанное смещение относится к текущей дате; региональные зоны могут менять его зимой и летом. Для постоянного UTC+0 выбирайте **`UTC`**, а не `Europe/London`.
+- Основной язык вводится тегом BCP 47: `en-US`, `en-GB`, `ru-RU`, `de-DE`. Другие языки перечисляются по приоритету через запятую или с новой строки. До 10 языков; регистр нормализуется, дубликаты удаляются, исходные языки Chrome не добавляются.
+- Нажмите **флаг России** для русского интерфейса или **флаг Великобритании** для английского. Это отдельная настройка: она сохраняется сразу, сохраняет несохранённые поля формы и не меняет языки сайтов. Переводятся подписи, названия зон, подсказки, статусы и ошибки приложения.
+- Блок **«Сохранённый профиль»** показывает подтверждённую конфигурацию. Пока изменения не сохранены, действует прежний профиль. Кнопка **«Перезагрузить»** обновляет текущую вкладку.
 
-Скрипт содержит канонический JSON настроек и исходный `main.js` из локального пакета. Фоновый обработчик получает исходник через `chrome.runtime.getURL`, а не из сети. JSON никогда не становится произвольным пользовательским JavaScript. Зарегистрированный скрипт выполняется синхронно: ему не нужны `chrome.storage`, сообщения, DOM-вставка `<script>` или пробуждение фонового worker. `eval` и `Function` не используются. Единственный зарегистрированный блок также избегает дедупликации файлов Chrome между статическими и динамическими скриптами.
+Начальный профиль: включено, `UTC`, `["en-US", "en"]`, режим «везде, кроме списка», список пуст. Все настройки хранятся в `chrome.storage.local`.
 
-Регистрация готовится **до следующей навигации**, а не через `executeScript` после её обнаружения. В реальном Chrome 155 первый inline-скрипт в `<head>` уже видел выбранные значения, в том числе при строгой CSP тестовой страницы. Остановка фонового worker не нарушила эту проверку. Это существенно надёжнее асинхронного чтения хранилища при каждом `document_start`.
+### Исключения и список включённых сайтов
 
-У `userScripts.register` нет параметров `matchOriginAsFallback` и `matchAboutBlank`. Для связанных документов есть дополнительный статический MAIN content script с `all_frames`, `match_about_blank`, `match_origin_as_fallback`. Он на `document_start` синхронно наследует неизменяемую публичную конфигурацию из доступного родителя или opener. На обычной странице без такой конфигурации он ничего не меняет. Он не предоставляет привилегированный канал сообщений.
+Во вкладке **«Сайты»** выберите один из двух режимов:
 
-**Границы раннего выполнения:** первая установка, обновление расширения, восстановление потерянной регистрации и изменение конфигурации требуют асинхронных API. Навигация во время этих операций может увидеть прежнюю или ещё не установленную конфигурацию. Между обновлением JS-регистрации, DNR и хранилища нет общей атомарной транзакции Chrome. После подтверждения сохранения перезагрузите страницы; не начинайте новую навигацию во время сохранения. BFCache и предварительно созданные документы тоже требуют перезагрузки. Синхронное чтение `iframe.contentWindow` непосредственно после создания начального пустого документа может опередить инъекцию. Для непрозрачных связанных origin наследование невозможно.
+| Режим | Что происходит | Пустой список |
+|---|---|---|
+| **Везде, кроме списка** | Сайты из списка получают исходные значения; остальные — выбранный профиль | Подмена на всех доступных сайтах |
+| **Только на сайтах из списка** | Подмена только на перечисленных сайтах; остальные получают исходные значения | Подмена нигде не применяется |
 
-## Поддерживаемые интерфейсы
+Введите домены или HTTP/HTTPS-адреса, по одному на строку; можно разделять запятыми. Например:
 
-| Интерфейс | Поведение |
+```text
+example.com
+https://news.example.org/article
+```
+
+Адрес из второго примера сохраняется как `news.example.org`: **путь, порт, протокол и параметры не различаются**. Домен `example.com` включает `www.example.com`, `shop.example.com` и другие его поддомены, но не `notexample.com` или `example.com.other.test`. `www.example.com` — более узкая запись; основной `example.com` в неё не входит. Unicode-домены нормализуются в ASCII/punycode. Поддержаны домены, `localhost` и IPv4; IPv6-литералы, маски `*.example.com`, адреса с логином/паролем и не-HTTP(S) схемы не принимаются. До 100 записей; повторы удаляются.
+
+Кнопка **«Добавить текущий сайт»** добавляет домен активной HTTP/HTTPS-вкладки. Проверьте список, нажмите **«Сохранить»** и перезагрузите страницы.
+
+Правило относится к **сайту в адресной строке**, включая его доступные iframe и сетевые запросы к сторонним ресурсам. Например, исключение `example.com` сохраняет исходные значения и для iframe с другим доменом внутри этого сайта. При открытии того же стороннего домена отдельной вкладкой правило оценивается заново по его собственному адресу. Для сетевых запросов без связанной вкладки Chrome использует домен инициатора — это особенно важно для автономных запросов Service Worker.
+
+### Поддерживаемые API и реализация
+
+- Подменяются `navigator.language`, `navigator.languages`, HTTP `Accept-Language`, локаль по умолчанию в Intl DateTimeFormat, NumberFormat, Collator, PluralRules, RelativeTimeFormat, ListFormat, DisplayNames, Segmenter и DurationFormat, когда API доступен.
+- Выбранная зона используется в Intl DateTimeFormat и `resolvedOptions()`, Date `getTimezoneOffset`, локальных getters, строковых `toString` / `toDateString` / `toTimeString`, трёх `toLocale…` методах, локальных setters, числовом конструкторе `new Date(y, m, …)` и стандартных ISO date-time строках с `T` без зоны.
+- Локаль по умолчанию подменяется также в Number/BigInt `toLocaleString` и String `localeCompare` / `toLocaleLowerCase` / `toLocaleUpperCase`.
+- Явные параметры сохраняются: `Intl.NumberFormat("de-DE")` остаётся немецким, а явно заданный `timeZone: "Asia/Tokyo"` — токийским. `Date.now`, timestamps, `getTime`, `valueOf`, `toISOString`, Date.UTC и UTC-методы сохраняют смысл. ISO-строки только с датой остаются UTC.
+- Смещение рассчитывается оригинальным Intl для каждой даты. Переходы DST учитываются: повторяющееся время выбирает первое вхождение, отсутствующее время сдвигается вперёд на размер разрыва. Сохраняются Invalid Date, типы исключений, преобразование аргументов, наследование Date и границы диапазона Date; оригинальные методы захвачены до подмены.
+
+Фоновый service worker заранее регистрирует единый `chrome.userScripts`-скрипт в **MAIN world**, на **document_start**, во всех доступных HTTP/HTTPS-фреймах. Проверенный JSON настроек подставляется в аргумент функции из локального `main.js`. Страница не ждёт `chrome.storage`, сообщения или пробуждение worker; код не использует eval/Function. Для JS-фильтра сайт верхнего уровня определяется синхронно через `location.ancestorOrigins`, независимо от Referer. Сетевой фильтр использует те же домены в динамическом DNR-правиле с `set`.
+
+Статический MAIN-скрипт с `all_frames`, `match_about_blank`, `match_origin_as_fallback` наследует уже применённый профиль для доступных связанных about:blank/srcdoc/blob-фреймов. Список сайтов остаётся внутри функции и не публикуется в window. На исключённом документе не создаётся публичное состояние расширения. Привилегированного моста сообщений нет; фоновый обработчик принимает команды только от своего `popup.html`.
+
+Сохранение последовательно обновляет JS-регистрацию, DNR и хранилище, проверяет записи Chrome и откатывает ошибки. Незавершённое применение хранится как `pending` и восстанавливается при следующем запуске worker. Общей атомарной транзакции между этими API нет: **не начинайте навигацию во время сохранения**. При первой установке, обновлении или восстановлении регистрации ранняя навигация может увидеть прежнюю конфигурацию. После подтверждения сохранения перезагрузите страницы; уже созданные документы, BFCache и предварительно загруженные страницы не обновляются автоматически.
+
+### Разрешения и ограничения
+
+| Разрешение | Назначение |
 |---|---|
-| `navigator.language`, `navigator.languages` | Основной язык и только выбранный упорядоченный список; массив заморожен |
-| HTTP `Accept-Language` | Динамическое DNR-правило с операцией `set`; явно включены `main_frame`, `sub_frame` и остальные поддерживаемые типы HTTP/HTTPS-запросов |
-| Intl с локалью по умолчанию | DateTimeFormat, NumberFormat, Collator, PluralRules, RelativeTimeFormat, ListFormat, DisplayNames, Segmenter и DurationFormat, когда API существует |
-| Intl DateTimeFormat | Выбранная зона, если `timeZone` отсутствует или равен `undefined`; `resolvedOptions()` соответствует ей |
-| Date local getters | Год, месяц, число, день недели, часы, минуты, секунды, миллисекунды, `getYear` и `getTimezoneOffset` |
-| Date local strings | `toString`, `toDateString`, `toTimeString` и три `toLocale…` метода |
-| Date local setters | `setFullYear`, `setMonth`, `setDate`, `setHours`, `setMinutes`, `setSeconds`, `setMilliseconds`, `setYear` |
-| `new Date(y, m, …)` | Компоненты трактуются в выбранной зоне; поддержаны переполнение компонентов и особое правило годов 0–99 |
-| ISO date-time без зоны | `new Date("2026-01-15T12:34:56")` и `Date.parse` используют выбранную локальную зону |
-| Числа и строки | Локаль по умолчанию в Number/BigInt `toLocaleString`, String `localeCompare`, `toLocaleLowerCase`, `toLocaleUpperCase` |
+| `storage` | Постоянные настройки, язык интерфейса и незавершённое применение |
+| `userScripts` | Ранний MAIN-скрипт с сохранённым профилем |
+| `declarativeNetRequestWithHostAccess` | Подмена Accept-Language с фильтром сайта верхнего уровня |
+| HTTP/HTTPS host permissions | Работа на посещаемых сайтах и в доступных iframe |
 
-Явные `locale` и `timeZone` сохраняются. `Intl.NumberFormat("de-DE")` остаётся немецким; `Intl.DateTimeFormat("en-US", {timeZone:"Asia/Tokyo"})` остаётся токийским. Пустой список локалей использует выбранные настройки. Объекты options не копируются через spread: сохраняются унаследованные значения, getters и штатная проверка параметров.
+Дополнительные разрешения tabs, activeTab, scripting, webRequest и DNR feedback не запрашиваются. ID/URL активной разрешённой HTTP/HTTPS-вкладки и её перезагрузка доступны с имеющимися правами. Включённый профиль **не охватывает**:
 
-Смещение вычисляется оригинальным `Intl.DateTimeFormat` для **момента времени конкретного объекта Date**. Локальные компоненты переводятся обратно в момент времени с совместимым с Date разрешением переходов: первый момент при повторении времени, сдвиг вперёд на размер разрыва при отсутствующем времени. Например, в New York `2026-03-08 02:30` становится `03:30`, а `2026-11-01 01:30` выбирает первое вхождение.
+- JavaScript в Dedicated Worker, SharedWorker и Service Worker; HTTP-запросы, дошедшие до сети, обрабатываются DNR, но ответы из Service Worker/CacheStorage без сети не получают заголовок.
+- Temporal: его определение зоны и форматирование не подменяются.
+- Непрозрачные data/sandbox-документы, недоступный opener или неизвестный origin верхнего уровня. Синхронное обращение к начальному пустому iframe сразу после создания может опередить инъекцию.
+- Нестандартный разбор строк без зоны, например `01/15/2026 12:00` или с пробелом вместо `T`: его локальная семантика остаётся у оригинального Date.parse. Используйте стандартный ISO с `T` или числовой конструктор.
+- Интерфейс Chrome, настройки ОС, HTML date/datetime-local controls, CSS, будущие API, защищённые chrome:// / страницы магазина и другие расширения. Исторические правила зависят от ICU Chrome; смещения с секундами могут дать дробные минуты в getTimezoneOffset, строковый GMT показывает минуты.
 
-`Date.now`, `getTime`, `valueOf`, `toISOString`, `Date.UTC`, UTC-getters и UTC-setters сохраняют момент времени и своё назначение. ISO-строки только с датой (`"2026-01-15"`) по стандарту остаются UTC. Даты с явным `Z`/смещением сохраняют timestamp. Сохраняются `instanceof`, наследование от Date, вызов `Date()` как функции, Invalid Date и типы штатных исключений. Проверены также границы диапазона Date. Оригинальные методы захвачены до подмены; внутренние вычисления не вызывают изменённые методы рекурсивно.
+Подмена обнаружима и может быть изменена или обойдена кодом страницы/другим realm. Она не меняет IP, геолокацию, язык Chrome или системные настройки и не гарантирует анонимность. Отозванный доступ к сайту, политика организации и другие расширения могут мешать применению.
 
-## Область действия и ограничения
+### Проверка
 
-- Обычные доступные HTTP/HTTPS-страницы, включая HTTP/HTTPS iframe другого origin, покрываются напрямую. В Chrome 155 фактически проверены также доступные `about:blank`, `srcdoc` и `blob:`.
-- `data:` iframe с непрозрачным origin **не покрыт JS-подменой**: у него нет доступа к конфигурации родителя. То же ограничение относится к аналогичным sandbox-фреймам и недоступному opener. Не используется асинхронный мост, который создавал бы ложное обещание ранней подмены.
-- Dedicated Worker, SharedWorker и Service Worker сайтов **не покрыты JS-подменой**. Их Date, Intl и navigator остаются исходными; это проверено отдельно. DNR применяется к доступным сетевым HTTP/HTTPS-запросам, включая сетевые загрузки worker-скриптов. Ответы, созданные Service Worker/CacheStorage без сетевого запроса, не получают новый HTTP-заголовок.
-- **Temporal не подменяется**. В тестовом Chrome он доступен, и `Temporal.Now.timeZoneId()` показывал исходную зону. Его методы форматирования тоже не заявлены покрытыми.
-- Нестандартный, зависящий от реализации разбор строк без зоны, например `"01/15/2026 12:00"` или строк с пробелом вместо `T`, делегируется оригинальному `Date.parse`. Он может использовать исходную зону Chrome. Для локального времени используйте стандартный ISO date-time с `T` или числовой конструктор; для момента времени — `Z`/явное смещение.
-- Исторические смещения с секундами вычисляются по базе ICU Chrome. `getTimezoneOffset` может дать дробное число минут; строковый `GMT±HHMM` показывает минутную часть. Актуальность региональных правил зависит от базы часовых поясов установленного браузера.
-- HTML controls `datetime-local`/date, CSS, интерфейс браузера, Intl.Locale как явный объект локали, будущие API, внутренние нативные механизмы и неизменённые контексты не покрыты. Сайт может применять язык аккаунта, cookies или собственные настройки.
-- `chrome://`, страницы магазина Chrome и другие защищённые страницы, а также другие расширения, не покрыты. Доступ к сайту, отозванный пользователем или политикой организации, может остановить инъекции. Другая DNR-конфигурация/расширение может конфликтовать с заголовком.
-- MAIN world доступен сайту: подмена обнаружима и может быть изменена/обойдена кодом страницы, ссылкой на оригиналы из другого realm или неподдерживаемым контекстом. Стандартные тексты исключений и внешний вид функций не гарантируются побайтно. Не обещается анонимность или неразличимость.
-- Расширение не меняет настройки системы, IP, геолокацию, язык интерфейса Chrome и содержимое страниц. Уже открытые страницы после изменения или выключения требуют перезагрузки. HTTP-правило переключается сразу; JS в старых документах остаётся прежним до перезагрузки.
-
-## Разрешения и ошибки
-
-| Разрешение | Зачем |
-|---|---|
-| `storage` | Постоянные настройки и состояние незавершённого применения в `chrome.storage.local` |
-| `userScripts` | Заранее зарегистрированный MAIN-скрипт с выбранными настройками |
-| `declarativeNetRequestWithHostAccess` | Подмена одного заголовка на разрешённых HTTP/HTTPS-ресурсах |
-| `http://*/*`, `https://*/*` | Работа на посещаемых сайтах и в доступных iframe |
-
-Разрешения `tabs`, `activeTab`, `scripting`, `webRequest`, DNR feedback не запрашиваются. Для получения ID активной вкладки и `tabs.reload` отдельное разрешение `tabs` не нужно. Нет телеметрии, удалённого кода, внешних сервисов, `externally_connectable` или web-accessible ресурсов.
-
-Фоновый обработчик принимает операции только из своего `popup.html` с проверкой ID и URL отправителя. Страница не может через сообщения менять настройки или выполнять операции расширения. Публичная конфигурация MAIN нужна только для связанных доступных фреймов и не предоставляет доступ к Chrome API.
-
-Изменения сериализуются. До обновления сохраняется durable intent `pending`. После регистрации JS и обновления DNR проверяются фактические записи Chrome, затем фиксируются настройки. При ошибках регистрации, DNR или хранилища выполняется откат, popup показывает ошибку; при неполном откате это прямо указывается. Прерванное применение восстанавливается на следующем запуске фонового worker. При выключении удаляются и динамическое правило, и JS-регистрация.
-
-## Проверка вручную
-
-Нужен Node.js 20+ только для тестового сервера и тестов:
+Node.js 20+ нужен только для сервера и тестов:
 
 ```powershell
 node test-site/server.js
-```
-
-Откройте `http://127.0.0.1:8787/` в Chrome с установленным расширением. **HTTP-заголовок показывается из реального `req.headers` локального сервера**, включая навигацию и fetch; JavaScript проверяется в HTTP-документе, не в `chrome-extension://`. Страница показывает `early`, основной документ, фреймы и три вида worker. `/records` содержит последние полученные сервером заголовки. `/?csp=1` включает строгую тестовую CSP.
-
-1. Сохраните `UTC`, `en-US`, `en` и перезагрузите страницу. Ожидайте `early.zone = UTC`, основной язык `en-US`, заголовок `en-US,en;q=0.9`; зимняя и летняя даты `12:34:56.789Z` должны иметь локальный час 12 и offset 0.
-2. Сохраните `Europe/Moscow`: для обеих дат ожидайте час 15 и offset −180. Для `America/New_York`: зимой час 7 / offset 300, летом час 8 / offset 240.
-3. Сравните `Intl`, локальные getters и строки Date. `explicit.locale` должен быть `de-DE`, `explicit.zone` — `Asia/Tokyo`; ISO, timestamp, valueOf и UTC-компоненты должны совпадать между конфигурациями.
-4. Проверьте ранний скрипт и HTTP/HTTPS iframe. Отдельно посмотрите исходные значения в `data:`, workers и Temporal, чтобы видеть реальную границу покрытия.
-5. В `chrome://extensions` откройте инспектор фонового service worker и остановите его кнопкой **Stop** в Application → Service Workers. Закройте инспектор и откройте новую тестовую страницу: подмена должна работать без worker. В автоматическом тесте дополнительно проверяется, что он остаётся остановленным.
-6. Полностью закройте Chrome и откройте снова с тем же обычным профилем. Убедитесь, что настройки сохранены и первый скрипт новой страницы видит их. Этот сценарий обычной установки требует ручного подтверждения — ограничение среды проверки описано ниже.
-7. Выключите подмену, сохраните и перезагрузите. Основной документ должен совпадать с исходными значениями workers; сервер должен снова получить исходный Accept-Language.
-
-## Автоматические проверки
-
-Без внешних зависимостей, 13 проверок:
-
-```powershell
 node --test tests/*.test.js
 ```
 
-Проверяются валидация, UTC/Moscow/New York, DST, календарные границы, Invalid Date, типы ошибок и преобразования аргументов, числовой конструктор, наследование, явные options, границы Date, откат ошибок script/DNR/storage, незавершённая транзакция, выключение и запрет сообщений сайта. Это модульные проверки, отдельно от реального браузера.
+Откройте `http://127.0.0.1:8787/` в Chrome с расширением: сервер показывает фактически полученный Accept-Language, обычная HTTP-страница — первый inline-скрипт, Date/Intl/navigator, iframe и workers. `/?csp=1` включает тестовую CSP; `/records` содержит последние запросы. Проверьте UTC + en-US/en, Москву и Нью-Йорк зимой/летом, явные параметры, выключение и оба режима сайтов.
 
-Для интеграционных тестов нужен `playwright-core` **только как инструмент тестирования**, а также Chrome с поддержкой CDP `Extensions.loadUnpacked` и `Extensions.getExtensions` (в этой среде Chrome 155):
+Опциональный интеграционный тест использует Playwright только для управления настоящим расширением:
 
 ```powershell
 npm install --no-save --package-lock=false playwright-core
 $env:CHROME_PATH = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
 node tests/browser.mjs
+node tests/summarize.mjs
 ```
 
-В комплектной среде Codex тест также умеет использовать уже установленный Playwright. При другом расположении модуля задайте `PLAYWRIGHT_MODULE` — абсолютный путь к `playwright-core/index.mjs`. Тест запускает отдельный профиль `.test-profile/<timestamp>`, не изменяет основной профиль, слушает `127.0.0.1:8787`, включает нужные переключатели Chrome, пользуется настоящим расширением. Поставляемый `popup.html` открывается в отдельной вкладке: headless Playwright не предоставляет нативное окно browser action как Page. Через этот документ проверены сохранение и кнопка перезагрузки текущей HTTP-вкладки; внешний вид сохранён в `verification/popup.png`. Он **не задаёт timezoneId, locale, Accept-Language через Playwright**, не использует DevTools emulation и не внедряет shim тестовым инструментом. Профиль и `test-results/browser.json` создаются заново; после закрытия тестового Chrome временные профили можно удалить.
+В комплектной среде Codex используется имеющийся Playwright; для другого пути можно задать `PLAYWRIGHT_MODULE` с абсолютным путём к `playwright-core/index.mjs`. Тест создаёт отдельный `.test-profile/<timestamp>`, а домены `*.test` направляет на локальный сервер через DNS-настройку только тестового Chrome. **Эмуляция языка, зоны или Accept-Language не используется**. Основной профиль Chrome не меняется. После завершения временный профиль можно удалить; архив создаётся `python tests/package.py` и не включает профили/зависимости.
 
-## Что проверено фактически
+**Фактически проверено 14 октября 2026:** Windows, Chrome 155.0.8059.40, FakeTL 1.2.0. Прошли 18 модульных тестов и 19 браузерных сценариев, включая исходные проверки, флаги RU/EN, оба режима сайтов, поддомены, сторонние запросы и iframe без Referer, пустой список включённых сайтов, добавление текущего сайта и сохранение списка. Подтверждены реальные заголовки навигации/fetch/скриптов, ранний inline-код, DST, сохранность timestamps/UTC, явные options и работа после остановки фонового worker. Отчёты: [summary](verification/browser-summary.json), [full report](verification/browser-report.json).
 
-Дата проверки: **14 октября 2026**, Windows, **Chrome 155.0.8059.40**, изолированный headless-профиль. Исходные значения среды: русский список языков и `Europe/Moscow`.
+**Не проверено полностью:** автоматический холодный запуск обычной установки через UI. Chrome действительно закрывался и запускался, настройки сохранились, но сессионную CDP-установку пришлось загрузить повторно. Отдельные HTTPS-проверки, Chrome 145, инкогнито, аварийное завершение, реальные обновления/отзыв разрешений, все sandbox/CSP/предварительно созданные документы и исторические зоны также не проверены. Нативное окно browser action визуально не проверено: тест открывает поставляемый popup.html во вкладке расширения. Границы workers, Temporal и data-фреймов фактически проверены и зафиксированы.
 
-Все 13 модульных тестов и 10 браузерных сценариев прошли для FakeTL 1.1.0. Подтверждены реальные заголовки навигации/fetch/iframe/скриптов/worker-скрипта, UTC, Москва и Нью-Йорк зимой/летом, согласованность Date/Intl/navigator, DST gaps/overlaps, сохранность timestamps/UTC и Date.now, явные locale/timeZone, ранний inline-скрипт, CSP, доступные связанные фреймы, остановка фонового worker, немецкая конфигурация, выключение и кнопка перезагрузки. Дополнительно проверены English/Русский, сохранение языка интерфейса после открытия popup и закрытия Chrome, перевод ошибки валидации и сохранность черновика/настроек сайтов при переключении. Исходные значения workers, Temporal и непрозрачного `data:` также зафиксированы. Краткое доказательство: `verification/browser-summary.json`; полный последний отчёт: `verification/browser-report.json`.
+## English
 
-**Перезапуск проверен частично:** Chrome действительно закрывался и запускался заново; сохранённые настройки пережили закрытие. CDP `loadUnpacked` загружает расширение для текущей сессии, поэтому после запуска пришлось повторно загрузить пакет и применить сохранённые настройки. Это не подтверждает автоматическое восстановление регистрации при холодном старте обычной установки через UI. Восстановление после обновления расширения, отключения разрешения userScripts и аварийного завершения Chrome в реальном браузере, Chrome 138 и другие версии, инкогнито, внешние HTTPS-сайты, сложные sandbox/CSP/предварительно загруженные документы и все исторические изменения IANA не проверены. HTTP-тесты используют настоящую сетевую цепочку; для HTTPS объявлены те же supported matches и правила, но отдельного HTTPS-тестового сервера нет.
+### What the extension does
 
-## Официальная документация, проверенная перед реализацией
+FakeTL lets you choose the language and time zone websites receive through supported JavaScript APIs and the HTTP `Accept-Language` header. For example, with a Russian computer locale and UTC+3, choose `UTC` and `en-US`, `en`: after reloading, supported website APIs report that profile and the server receives `Accept-Language: en-US,en;q=0.9`.
 
-- [chrome.userScripts](https://developer.chrome.com/docs/extensions/reference/api/userScripts): `code`, MAIN, `document_start`, регистрация и отдельное разрешение пользовательских скриптов с Chrome 138; регистрации очищаются при обновлении расширения.
-- [Content scripts](https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts) и [Manifest content_scripts](https://developer.chrome.com/docs/extensions/reference/manifest/content-scripts): порядок запуска, мир выполнения, all_frames и связанные фреймы.
-- [chrome.scripting](https://developer.chrome.com/docs/extensions/reference/api/scripting): динамическая регистрация принимает пути к файлам, а поздний `executeScript` не решает передачу произвольной конфигурации до первого скрипта сайта.
-- [chrome.declarativeNetRequest](https://developer.chrome.com/docs/extensions/reference/api/declarativeNetRequest): modifyHeaders/set, динамические правила, область типов запросов, взаимодействие с Service Worker. Динамические правила сохраняются между сессиями.
+This Manifest V3 extension uses JavaScript, HTML and CSS. Its runtime needs no build step, external dependencies, remote code, telemetry or external services. **Chrome 145+ is required**: network filtering by the website in the address bar uses `topDomains` / `excludedTopDomains`, available since Chrome 145.
 
-Минимальная версия 138 выбрана, чтобы опираться на per-extension переключатель userScripts и поддерживаемые MAIN/related-frame API. Она указана в manifest; проверка непосредственно на Chrome 138 остаётся открытой.
+### Installation and updates
 
-## English quickstart
+1. Download the project with **Code → Download ZIP**, or extract `FakeTL.zip`. The selected folder must contain `manifest.json`, the JavaScript files, `popup.html`, `popup.css` and `icons`.
+2. Open `chrome://extensions` and enable **Developer mode**.
+3. Click **Load unpacked** and select the folder containing `manifest.json`.
+4. Open FakeTL’s **Details** and enable **Allow User Scripts**. Without this access the popup reports that application is not confirmed.
+5. Allow access to the websites you want to cover. The “everywhere except the list” mode needs access to all relevant HTTP/HTTPS websites. Optionally pin FakeTL to the toolbar.
+6. Open FakeTL, configure the profile, click **Save**, wait for confirmation and reload open pages.
 
-**FakeTL (FakeTimeLanguage)** is a Manifest V3 Chrome extension that changes the preferred languages and time zone visible to websites through supported JavaScript APIs and the HTTP Accept-Language header. The extension itself has no build step, external dependencies, remote code or telemetry.
+To update, replace files in the same folder, click the extension’s **reload/update** button in `chrome://extensions`, then reload websites. Preferences are preserved. Settings from versions 1.0/1.1 migrate to “everywhere except the list” with an empty list, preserving the selected time zone and languages.
 
-1. Use **Chrome 138 or newer**. Download/extract the repository or `FakeTL.zip`.
-2. Open `chrome://extensions`, enable **Developer mode**, choose **Load unpacked**, and select the folder containing `manifest.json`.
-3. Open the extension’s **Details** and enable **Allow User Scripts**. Allow access to the websites you want to cover.
-4. Open FakeTL, choose **English** in the **Interface** selector, select an IANA time zone and ordered BCP 47 language tags, and click **Save and apply**.
-5. Reload open pages. Use **UTC** for constant UTC+0; **Europe/London** has seasonal offsets.
+### Language, time and interface
 
-The interface language is saved immediately and independently of spoofed website languages. Switching English/Russian preserves unsaved form edits. Existing time-zone/language preferences survive extension updates. Initial website settings are enabled, UTC, and `["en-US", "en"]`.
+- The master switch enables/disables spoofing. Changes take effect after **Save** and page reloads.
+- **Language & time** provides search and an IANA zone list, such as `UTC`, `Europe/Moscow`, `Europe/Berlin`, `America/New_York`, `Asia/Tokyo`. Displayed offsets are for the current date; regional zones can change between winter and summer. Use **`UTC`** for constant UTC+0, rather than `Europe/London`.
+- Enter the primary language as a BCP 47 tag: `en-US`, `en-GB`, `ru-RU`, `de-DE`. Enter other languages in priority order, separated by commas or new lines. Up to 10 languages; case is normalized, duplicates removed, and Chrome’s original languages are not added.
+- Click the **Russian flag** for Russian or the **British flag** for English. Interface language is saved immediately, preserves unsaved form edits, and does not change website languages. Labels, zone names, help, status and application errors are translated.
+- **Saved profile** shows the confirmed configuration. Unsaved edits leave the previous profile active. **Reload page** reloads the current tab.
 
-Run `node test-site/server.js` and visit `http://127.0.0.1:8787/` for server-received headers, the first inline page script, iframe results, and worker probes. Unit tests: `node --test tests/*.test.js`. Optional real-browser tests: install `playwright-core` for testing and run `node tests/browser.mjs`. No locale or time-zone emulation is used.
+Initial profile: enabled, `UTC`, `["en-US", "en"]`, “everywhere except the list”, empty list. All preferences are stored in `chrome.storage.local`.
 
-Coverage limits: workers, Temporal and opaque data frames retain original JavaScript values; implementation-dependent legacy date parsing is delegated to Chrome. This is detectable and does not change IP, geolocation, OS settings or the Chrome UI. All 13 unit tests and 10 integration scenarios passed in real Chrome 155 on Windows. The native browser-action window was not visually tested: integration tests open the shipped popup document in an extension tab. A real browser shutdown/restart preserved stored preferences, but the session-only CDP installation needed reloading, so automatic restoration of a normally installed unpacked extension at cold start remains unverified. Chrome 138, separate HTTPS integration tests and incognito also remain unverified. See the detailed Russian coverage and verification sections above.
+### Exceptions and included websites
 
-![FakeTL in English](verification/popup-en.png)
+Choose one of two modes under **Websites**:
+
+| Mode | Behavior | Empty list |
+|---|---|---|
+| **Everywhere except the list** | Listed websites receive original values; all others receive the selected profile | Spoofing on all accessible websites |
+| **Only websites in the list** | Only listed websites receive the selected profile; all others receive original values | No websites are spoofed |
+
+Enter domains or HTTP/HTTPS URLs, one per line; commas also work. For example:
+
+```text
+example.com
+https://news.example.org/article
+```
+
+The second entry is saved as `news.example.org`: **paths, ports, protocols and query parameters are not distinguished**. `example.com` includes `www.example.com`, `shop.example.com` and other subdomains, but not `notexample.com` or `example.com.other.test`. `www.example.com` is narrower and does not include its parent `example.com`. Unicode domains become ASCII/punycode. Domains, localhost and IPv4 are supported; IPv6 literals, wildcards such as `*.example.com`, URLs containing credentials and non-HTTP(S) schemes are rejected. Up to 100 entries; duplicates are removed.
+
+**Add current website** inserts the domain of the active HTTP/HTTPS tab. Review the list, click **Save**, then reload pages.
+
+Rules apply to **the website in the address bar**, including its accessible iframes and requests for third-party resources. For example, excluding `example.com` also preserves original values in a cross-origin iframe inside that website. Opening that third-party domain in its own tab evaluates the rules against its own address. For requests without an associated tab, Chrome uses the initiator domain, which matters for autonomous Service Worker requests.
+
+### Supported APIs and implementation
+
+- Changes navigator.language/languages, HTTP Accept-Language, and default locales in Intl DateTimeFormat, NumberFormat, Collator, PluralRules, RelativeTimeFormat, ListFormat, DisplayNames, Segmenter and DurationFormat when available.
+- Uses the selected zone in Intl DateTimeFormat/resolvedOptions, Date getTimezoneOffset, local getters, toString/toDateString/toTimeString, the three toLocale methods, local setters, numeric Date construction and standard ISO date-time strings with `T` but no zone.
+- Changes default locales in Number/BigInt toLocaleString and String localeCompare/toLocaleLowerCase/toLocaleUpperCase.
+- Preserves explicit options: Intl.NumberFormat("de-DE") remains German; an explicit timeZone "Asia/Tokyo" remains Tokyo. Date.now, timestamps, getTime, valueOf, toISOString, Date.UTC and UTC methods retain their semantics. ISO date-only strings remain UTC.
+- Calculates offsets with the original Intl for each instant, including DST. Overlaps choose the first occurrence; gaps move forward by the gap size. Invalid Date, exception types, argument coercion, Date subclassing and Date range boundaries are preserved and tested; original methods are captured before patching.
+
+The background service worker pre-registers one `chrome.userScripts` script in **MAIN world**, at **document_start**, in all accessible HTTP/HTTPS frames. Validated settings JSON is inserted as an argument to the packaged main.js function. Page loading does not wait for storage, messages or worker startup; no eval/Function is used. The JavaScript filter reads the top-level site synchronously from location.ancestorOrigins, independently of Referer. The network filter uses the same domains in a dynamic DNR rule with the `set` operation.
+
+A static MAIN script with all_frames, match_about_blank and match_origin_as_fallback inherits an already applied profile in accessible related about:blank/srcdoc/blob frames. The website list stays inside the function and is not published on window. Exempt documents receive no public extension state. There is no privileged page messaging bridge; the worker accepts commands only from its own popup.html.
+
+Saving serially updates the JS registration, DNR and storage, verifies Chrome’s records and rolls back errors. Interrupted application is stored as pending and reconciled on the next worker start. Chrome has no common atomic transaction across these APIs: **avoid navigation while saving**. Initial installation, updates or registration recovery can race with early navigation. Reload after confirmation; existing documents, BFCache and preloaded pages are not updated automatically.
+
+### Permissions and limitations
+
+| Permission | Purpose |
+|---|---|
+| `storage` | Persistent profile, interface language and interrupted application |
+| `userScripts` | Early MAIN script with the saved profile |
+| `declarativeNetRequestWithHostAccess` | Accept-Language replacement with top-level website filtering |
+| HTTP/HTTPS host permissions | Access to visited websites and accessible iframes |
+
+No additional tabs, activeTab, scripting, webRequest or DNR feedback permission is requested. The active authorized HTTP/HTTPS tab’s ID/URL and reload are available with existing permissions. The enabled profile **does not cover**:
+
+- JavaScript in Dedicated Worker, SharedWorker or Service Worker. DNR handles requests reaching the network, but Service Worker/CacheStorage responses without a network request get no modified header.
+- Temporal: zone detection and formatting are unchanged.
+- Opaque data/sandbox documents, inaccessible openers or unknown top-level origins. Synchronously accessing an initial empty iframe immediately after creation can precede injection.
+- Implementation-dependent legacy parsing without a zone, such as `01/15/2026 12:00` or a space instead of `T`; original Date.parse retains its local semantics. Use standard ISO with `T` or the numeric constructor.
+- The Chrome UI, OS settings, HTML date/datetime-local controls, CSS, future APIs, protected chrome:// / store pages and other extensions. Historical rules depend on Chrome ICU; offsets containing seconds can produce fractional getTimezoneOffset minutes, while the GMT string shows minutes.
+
+Spoofing is detectable and can be changed or bypassed by page code or another realm. It does not change IP, geolocation, Chrome language or OS preferences and does not guarantee anonymity. Revoked site access, organization policy and other extensions can interfere with application.
+
+### Verification
+
+Node.js 20+ is only needed for the test server and tests:
+
+```powershell
+node test-site/server.js
+node --test tests/*.test.js
+```
+
+Open `http://127.0.0.1:8787/` in Chrome with FakeTL. The server displays the actual received Accept-Language; the ordinary HTTP page probes the first inline script, Date/Intl/navigator, frames and workers. `/?csp=1` enables test CSP; `/records` shows recent requests. Check UTC + en-US/en, Moscow/New York winter/summer, explicit options, disabling, and both website modes.
+
+The optional integration test uses Playwright only to control the actual extension:
+
+```powershell
+npm install --no-save --package-lock=false playwright-core
+$env:CHROME_PATH = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+node tests/browser.mjs
+node tests/summarize.mjs
+```
+
+Codex’s bundled environment can use the existing Playwright; set PLAYWRIGHT_MODULE to an absolute playwright-core/index.mjs path elsewhere. The test uses an isolated `.test-profile/<timestamp>` and maps `*.test` to the local server only in that test Chrome’s DNS configuration. **No language, time-zone or Accept-Language emulation is used.** The main Chrome profile is untouched. Temporary test profiles can be deleted after completion. `python tests/package.py` creates an archive without profiles or dependencies.
+
+**Actually verified on October 14, 2026:** Windows, Chrome 155.0.8059.40, FakeTL 1.2.0. All 18 unit tests and 19 browser scenarios passed, including the original checks, RU/EN flags, both website modes, subdomains, third-party requests and frames without Referer, empty include lists, adding the current site and list persistence. Real navigation/fetch/script headers, early inline execution, DST, timestamps/UTC, explicit options and behavior while the background worker remains stopped were confirmed. Reports: [summary](verification/browser-summary.json), [full report](verification/browser-report.json).
+
+**Not fully verified:** automatic cold startup of a normal UI-installed unpacked extension. Chrome was closed and restarted, and preferences survived, but the session-only CDP installation needed loading again. Separate HTTPS tests, Chrome 145, incognito, crashes, real updates/permission revocation, all sandbox/CSP/pre-created documents and historical zones remain unverified. The native browser action window was not visually tested; the test opens the shipped popup.html in an extension tab. Worker, Temporal and data-frame boundaries were actually probed and recorded.
+
+## Official references / Официальные источники
+
+- [Chrome userScripts](https://developer.chrome.com/docs/extensions/reference/api/userScripts): registration, MAIN world, document_start and Allow User Scripts.
+- [Chrome declarativeNetRequest](https://developer.chrome.com/docs/extensions/reference/api/declarativeNetRequest): dynamic modifyHeaders/set and topDomains/excludedTopDomains (Chrome 145+).
+- [Chrome content scripts](https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts) and [manifest content_scripts](https://developer.chrome.com/docs/extensions/reference/manifest/content-scripts): related frames and execution timing.
+- [HTML Standard: Location.ancestorOrigins](https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-location-ancestororigins): synchronous ancestor origins.
+
+![Website controls](verification/popup-sites-en.png)

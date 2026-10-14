@@ -4,14 +4,14 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {normalizeSettings, acceptLanguage} from '../settings.js';
 const source = readFileSync(new URL('../main.js', import.meta.url), 'utf8');
-function realm(timeZone, languages = ['en-US', 'en']) {
-  const context = vm.createContext({});
-  vm.runInContext(`class Navigator { get language(){if (!(this instanceof Navigator)) throw new TypeError(); return 'ru-RU'} get languages(){return ['ru-RU']} }; globalThis.Navigator=Navigator; globalThis.navigator=new Navigator(); globalThis.location={protocol:'https:'}; globalThis.parent=globalThis; globalThis.opener=null; globalThis[Symbol.for('locale-timezone/config/v1')]=${JSON.stringify({enabled: true, timeZone, languages})};`, context);
-  vm.runInContext(source, context);
+function realm(timeZone, languages = ['en-US', 'en'], scope = {}, host = 'example.test', ancestors = []) {
+  const context = vm.createContext({URL});
+  vm.runInContext(`class Navigator { get language(){if (!(this instanceof Navigator)) throw new TypeError(); return 'ru-RU'} get languages(){return ['ru-RU']} }; globalThis.Navigator=Navigator; globalThis.navigator=new Navigator(); globalThis.location={protocol:'https:',hostname:${JSON.stringify(host)},ancestorOrigins:${JSON.stringify(ancestors)}}; globalThis.parent=globalThis; globalThis.opener=null;`, context);
+  vm.runInContext(source.replace('/*FAKETL_CONFIG*/ undefined', JSON.stringify({enabled: true, timeZone, languages, ...scope})), context);
   return code => JSON.parse(vm.runInContext(`JSON.stringify(${code})`, context));
 }
 test('settings canonicalization and header', () => {
-  assert.deepEqual(normalizeSettings({enabled: true, timeZone: 'UTC', languages: ['EN-us', 'en', 'en-US']}), {enabled: true, timeZone: 'UTC', languages: ['en-US', 'en']});
+  assert.deepEqual(normalizeSettings({enabled: true, timeZone: 'UTC', languages: ['EN-us', 'en', 'en-US']}), {enabled: true, timeZone: 'UTC', languages: ['en-US', 'en'], siteMode: 'exclude', sites: []});
   assert.equal(acceptLanguage(['en-US', 'en']), 'en-US,en;q=0.9');
   for (const x of ['en_US', '', 'x']) assert.throws(() => normalizeSettings({enabled: true, timeZone: 'UTC', languages: [x]}));
   assert.throws(() => normalizeSettings({enabled: true, timeZone: 'not-a-zone', languages: ['en']}));
@@ -77,4 +77,18 @@ test('calendar getters agree with Intl across midnight, DST and year boundaries'
     })`);
     assert.equal(agrees, true, zone);
   }
+});
+test('MAIN world filters top-level domains and cross-origin frames synchronously', () => {
+  const include = {siteMode: 'include', sites: ['allowed.test']};
+  const exclude = {siteMode: 'exclude', sites: ['ignored.test']};
+  const lang = r => r('navigator.language');
+  assert.equal(lang(realm('UTC', ['en-US'], include, 'allowed.test')), 'en-US');
+  assert.equal(lang(realm('UTC', ['en-US'], include, 'assets.test', ['https://allowed.test'])), 'en-US');
+  assert.equal(lang(realm('UTC', ['en-US'], include, 'allowed.test', ['https://other.test'])), 'ru-RU');
+  assert.equal(lang(realm('UTC', ['en-US'], exclude, 'assets.test', ['https://ignored.test'])), 'ru-RU');
+  assert.equal(lang(realm('UTC', ['en-US'], {siteMode: 'include', sites: []})), 'ru-RU');
+  const ignored = realm('UTC', ['en-US'], exclude, 'ignored.test');
+  assert.equal(ignored(`Object.getOwnPropertySymbols(globalThis).some(s=>String(s).includes('locale-timezone'))`), false);
+  const allowed = realm('UTC', ['en-US'], include, 'allowed.test');
+  assert.equal(allowed(`globalThis[Symbol.for('locale-timezone/config/v1')].sites === undefined`), true);
 });

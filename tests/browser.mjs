@@ -17,18 +17,43 @@ let context;
 const evidence = {cases: [], warnings: [], browser: null};
 async function launch() {
   return playwright.chromium.launchPersistentContext(profile, {executablePath, headless: true,
-    ignoreDefaultArgs: ['--disable-extensions'], args: ['--enable-unsafe-extension-debugging'], viewport: {width: 1000, height: 900}});
+    ignoreDefaultArgs: ['--disable-extensions'], args: ['--enable-unsafe-extension-debugging', '--host-resolver-rules=MAP *.test 127.0.0.1', '--no-proxy-server'], viewport: {width: 1000, height: 900}});
 }
-async function save(popup, zone, enabled = true, languages = ['en-US', 'en']) {
+async function save(popup, zone, enabled = true, languages = ['en-US', 'en'], siteMode = 'exclude', sites = []) {
   await popup.reload();
   await popup.locator('#primary-language').fill(languages[0]);
   await popup.locator('#other-languages').fill(languages.slice(1).join(', '));
   await popup.locator('#time-zone').selectOption(zone);
   await popup.locator('#enabled').setChecked(enabled);
+  await popup.locator('#tab-sites').click();
+  await popup.locator(`[name="site-mode"][value="${siteMode}"]`).check();
+  await popup.locator('#site-list').fill(sites.join('\n'));
   await popup.locator('#save').click();
   await popup.waitForFunction(() => !document.getElementById('save').disabled);
   const msg = await popup.locator('#message').innerText();
   assert.match(msg, /Настройки сохранены и проверены|Settings saved and verified/, msg);
+}
+async function setInterface(popup, language) {
+  await popup.locator(`[data-ui-language="${language}"]`).click();
+  await popup.waitForFunction(language => document.documentElement.lang === language && !document.querySelector('[data-ui-language="' + language + '"]').disabled, language);
+}
+async function inspectScope(host, spoofed, name, native) {
+  const page = await context.newPage();
+  await page.goto(`http://${host}:8787/scope`);
+  await page.waitForFunction(() => window.scopeReport?.http && scopeReport?.thirdParty && scopeReport?.frame?.http);
+  const result = await page.evaluate(() => scopeReport);
+  const header = spoofed ? 'en-US,en;q=0.9' : native.navigationHeader;
+  for (const h of [result.navigationHeader, result.http.acceptLanguage, result.thirdParty.acceptLanguage, result.frame.http.acceptLanguage]) assert.equal(h, header, name);
+  for (const snapshot of [result.early, result.frame.early]) {
+    assert.equal(snapshot.language, spoofed ? 'en-US' : native.early.language, name);
+    assert.equal(snapshot.zone, spoofed ? 'UTC' : native.early.zone, name);
+    assert.equal(snapshot.hours, spoofed ? 12 : native.early.hours, name);
+    assert.deepEqual(snapshot.languages, spoofed ? ['en-US', 'en'] : native.early.languages, name);
+  }
+  const keys = await page.evaluate(() => Object.getOwnPropertySymbols(window).filter(s => String(s).includes('locale-timezone')).map(String));
+  if (!spoofed) assert.deepEqual(keys, [], 'An exempt site gets no public extension state');
+  evidence.cases.push({name, scope: {host, spoofed, result}});
+  return page;
 }
 async function inspectPage(zone, hours, offsets, name, query = '') {
   const page = await context.newPage();
@@ -108,13 +133,18 @@ try {
   await inspectPage('UTC', [12, 12], [0, 0], 'UTC');
   // UI language is independent of spoofed website locales and preserves drafts.
   const originalSettings = await popup.evaluate(async () => (await chrome.storage.local.get('settings')).settings);
+  await popup.locator('#tab-profile').click();
   await popup.locator('#primary-language').fill('fr-FR');
   await popup.locator('#time-zone').selectOption('Asia/Tokyo');
-  await popup.locator('#ui-language').selectOption('en');
-  await popup.waitForFunction(() => document.documentElement.lang === 'en' && !document.getElementById('ui-language').disabled);
-  assert.equal(await popup.locator('#save').innerText(), 'Save and apply');
+  await popup.locator('#tab-sites').click();
+  await popup.locator('[name="site-mode"][value="include"]').check();
+  await popup.locator('#site-list').fill('draft.test');
+  await setInterface(popup, 'en');
+  assert.equal(await popup.locator('#save').innerText(), 'Save');
   assert.equal(await popup.locator('#primary-language').inputValue(), 'fr-FR');
   assert.equal(await popup.locator('#time-zone').inputValue(), 'Asia/Tokyo');
+  assert.equal(await popup.locator('#site-list').inputValue(), 'draft.test');
+  assert.equal(await popup.locator('[name="site-mode"][value="include"]').isChecked(), true);
   assert.deepEqual(await popup.evaluate(async () => (await chrome.storage.local.get('settings')).settings), originalSettings);
   await popup.reload();
   await popup.waitForFunction(() => document.documentElement.lang === 'en' && !document.getElementById('save').disabled);
@@ -127,18 +157,17 @@ try {
   assert.deepEqual(await popup.evaluate(async () => (await chrome.storage.local.get('settings')).settings), originalSettings);
   await save(popup, 'UTC');
   await mkdir(path.join(root, 'verification'), {recursive: true});
-  await popup.setViewportSize({width: 390, height: 600});
+  await popup.setViewportSize({width: 400, height: 600});
+  await popup.locator('#tab-profile').click();
   await popup.screenshot({path: path.join(root, 'verification/popup-en.png'), fullPage: true});
-  await popup.locator('#ui-language').selectOption('ru');
-  await popup.waitForFunction(() => document.documentElement.lang === 'ru' && !document.getElementById('ui-language').disabled);
-  assert.equal(await popup.locator('#save').innerText(), 'Сохранить и применить');
+  await setInterface(popup, 'ru');
+  assert.equal(await popup.locator('#save').innerText(), 'Сохранить');
   await popup.screenshot({path: path.join(root, 'verification/popup.png'), fullPage: true});
-  await popup.locator('#ui-language').selectOption('en');
-  await popup.waitForFunction(() => document.documentElement.lang === 'en' && !document.getElementById('ui-language').disabled);
+  await setInterface(popup, 'en');
   evidence.cases.push({name: 'English/Russian interface switch', ui: {persisted: true, draftsPreserved: true, websiteSettingsUnchanged: true, errorsLocalized: true}});
   await inspectPage('UTC', [12, 12], [0, 0], 'UTC, strict CSP', '?csp=1');
   await save(popup, 'Europe/Moscow'); await inspectPage('Europe/Moscow', [15, 15], [-180, -180], 'Moscow');
-  await save(popup, 'America/New_York'); await inspectPage('America/New_York', [7, 8], [300, 240], 'New York');
+  await save(popup, 'America/New_York', true, ['en-US', 'en'], 'include', ['127.0.0.1']); await inspectPage('America/New_York', [7, 8], [300, 240], 'New York');
   // Stop the extension worker through CDP, then navigate without waking it.
   const pageCDP = await context.newCDPSession(popup);
   const lifecycle = [];
@@ -165,10 +194,12 @@ try {
   }
   popup = await context.newPage(); await popup.goto(`chrome-extension://${id}/popup.html`);
   await popup.waitForFunction(() => document.getElementById('time-zone').value === 'America/New_York');
-  assert.equal(await popup.locator('#ui-language').inputValue(), 'en');
-  assert.equal(await popup.locator('#save').innerText(), 'Save and apply');
+  assert.equal(await popup.locator('[data-ui-language="en"]').getAttribute('aria-pressed'), 'true');
+  assert.equal(await popup.locator('#save').innerText(), 'Save');
+  const restoredSites = await popup.evaluate(async () => (await chrome.storage.local.get('settings')).settings);
+  assert.equal(restoredSites.siteMode, 'include'); assert.deepEqual(restoredSites.sites, ['127.0.0.1']);
   // The original saved preferences survive even this session-only loader.
-  await save(popup, 'America/New_York');
+  await save(popup, 'America/New_York', true, ['en-US', 'en'], 'include', ['127.0.0.1']);
   await inspectPage('America/New_York', [7, 8], [300, 240], 'Browser restart plus CDP reload, persisted settings');
   // Language defaults in all supported locale-dependent constructors.
   await save(popup, 'Europe/Berlin', true, ['de-DE', 'de']);
@@ -179,6 +210,35 @@ try {
   for (const [, locale, explicit] of languageReport.constructors) assert.equal(locale, explicit);
   assert.equal(languageReport.displayNames, 'de-DE');
   evidence.cases.push({name: 'German defaults', languageReport}); await german.close();
+  // Site filters: use real local DNS mappings, not language/time-zone emulation.
+  await save(popup, 'UTC', false);
+  const baseline = await context.newPage(); await baseline.goto('http://alpha.test:8787/scope');
+  await baseline.waitForFunction(() => window.scopeReport?.http && scopeReport.frame?.http && scopeReport.thirdParty);
+  const native = await baseline.evaluate(() => scopeReport); await baseline.close();
+  await save(popup, 'UTC', true, ['en-US', 'en'], 'exclude', ['alpha.test']);
+  await (await inspectScope('alpha.test', false, 'Exception: main/third-party/frame preserve originals', native)).close();
+  await (await inspectScope('sub.alpha.test', false, 'Exception applies to subdomains', native)).close();
+  await (await inspectScope('beta.test', true, 'Unlisted website still spoofed', native)).close();
+  await save(popup, 'UTC', true, ['en-US', 'en'], 'include', ['alpha.test']);
+  await (await inspectScope('alpha.test', true, 'Include: main/third-party/frame spoofed', native)).close();
+  await (await inspectScope('sub.alpha.test', true, 'Include applies to subdomains', native)).close();
+  await (await inspectScope('beta.test', false, 'Unlisted website original in include mode', native)).close();
+  await save(popup, 'UTC', true, ['en-US', 'en'], 'include', []);
+  const sitePage = await inspectScope('alpha.test', false, 'Empty include list affects no websites', native);
+  await sitePage.bringToFront(); await popup.reload();
+  await popup.locator('#tab-sites').click(); await popup.locator('#add-site').click();
+  await popup.waitForFunction(() => document.getElementById('site-list').value === 'alpha.test');
+  await popup.locator('#save').click(); await popup.waitForFunction(() => !document.getElementById('save').disabled);
+  assert.match(await popup.locator('#message').innerText(), /Settings saved and verified/);
+  await sitePage.close();
+  await (await inspectScope('alpha.test', true, 'Add current website', native)).close();
+  await popup.locator('#tab-sites').click();
+  await popup.setViewportSize({width: 400, height: 600});
+  await popup.screenshot({path: path.join(root, 'verification/popup-sites-en.png'), fullPage: true});
+  await popup.reload(); await popup.locator('#tab-sites').click();
+  assert.equal(await popup.locator('#site-list').inputValue(), 'alpha.test');
+  assert.equal(await popup.locator('[name="site-mode"][value="include"]').isChecked(), true);
+  evidence.cases.push({name: 'Site mode and list persist after popup reopen'});
   await save(popup, 'UTC', false);
   const disabled = await context.newPage(); await disabled.goto('http://127.0.0.1:8787/');
   await disabled.waitForFunction(() => window.testReport?.workers?.dedicated && window.testReport?.http);
@@ -189,7 +249,7 @@ try {
   evidence.cases.push({name: 'Disabled and reloaded', report});
   // Exercise the shipped popup document. Headless Playwright does not expose
   // native action popups as Page targets, so the same document is open in a tab.
-  await popup.setViewportSize({width: 390, height: 600});
+  await popup.setViewportSize({width: 400, height: 600});
   await mkdir(path.join(root, 'verification'), {recursive: true});
   await popup.screenshot({path: path.join(root, 'verification/popup-disabled-en.png'), fullPage: true});
   await disabled.bringToFront();

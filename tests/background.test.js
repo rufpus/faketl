@@ -41,7 +41,7 @@ for (const failure of ['network', 'script', 'storage']) {
     const {state, send} = await harness();
     const scripts = copy(state.scripts); const rules = copy(state.rules); const saved = copy(state.storage.settings);
     state.fail = failure;
-    const result = await send({type: 'save', settings: {enabled: true, timeZone: 'America/New_York', languages: ['de-DE', 'de']}});
+    const result = await send({type: 'save', settings: {enabled: true, timeZone: 'America/New_York', languages: ['de-DE', 'de'], siteMode: 'include', sites: ['allowed.test']}});
     assert.equal(result.ok, false); assert.match(result.error, new RegExp(failure));
     assert.deepEqual(state.scripts, scripts); assert.deepEqual(state.rules, rules); assert.deepEqual(state.storage.settings, saved);
     assert.ok(state.storage.applyError); assert.equal(state.storage.pending, undefined);
@@ -57,5 +57,5 @@ test('unfinished application is reconciled from durable intent on worker start',
   const desired = {enabled: true, timeZone: 'Europe/Berlin', languages: ['de-DE', 'de']};
   const {state, send} = await harness({settings: settingsModule.DEFAULT_SETTINGS, pending: desired});
   assert.equal((await send({type: 'status'})).ok, true);
-  assert.deepEqual(state.storage.settings, desired); assert.equal(state.storage.pending, undefined);
+  assert.deepEqual(state.storage.settings, settingsModule.normalizeSettings(desired)); assert.equal(state.storage.pending, undefined);
 });

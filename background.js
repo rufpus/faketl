@@ -43,11 +43,13 @@ async function inspect(settings) {
     scripts[0].world === 'MAIN' && scripts[0].runAt === 'document_start' && scripts[0].allFrames === true &&
     JSON.stringify(scripts[0].matches) === JSON.stringify(expected.matches) &&
     JSON.stringify(scripts[0].js) === JSON.stringify(expected.js) : scripts.length === 0;
-  const ruleOK = settings.enabled ? rules.length === 1 && rules[0].action.type === 'modifyHeaders' &&
+  const expectedRules = makeRules(settings);
+  const ruleOK = expectedRules.length ? rules.length === 1 && rules[0].action.type === 'modifyHeaders' &&
     rules[0].action.requestHeaders?.[0]?.value === makeRules(settings)[0].action.requestHeaders[0].value &&
     rules[0].action.requestHeaders?.[0]?.operation === 'set' && rules[0].condition.regexFilter === '^https?://' &&
-    JSON.stringify([...(rules[0].condition.resourceTypes || [])].sort()) === JSON.stringify([...makeRules(settings)[0].condition.resourceTypes].sort()) : rules.length === 0;
-  if (!scriptOK || !ruleOK) throw new Error('Сохранённые настройки и активные правила не совпадают. Нажмите «Сохранить и применить».');
+    JSON.stringify([...(rules[0].condition.resourceTypes || [])].sort()) === JSON.stringify([...expectedRules[0].condition.resourceTypes].sort()) &&
+    ['topDomains', 'excludedTopDomains'].every(key => JSON.stringify([...(rules[0].condition[key] || [])].sort()) === JSON.stringify([...(expectedRules[0].condition[key] || [])].sort())) : rules.length === 0;
+  if (!scriptOK || !ruleOK) throw new Error('Сохранённые настройки и активные правила не совпадают. Нажмите «Сохранить».');
 }
 
 async function apply(input) {
