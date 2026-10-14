@@ -1,6 +1,8 @@
 # FakeTL — FakeTimeLanguage
 
-[Русский](#русский) · [English](#english) · [Source](https://github.com/rufpus/faketl)
+[Русский](#русский) · [English](#english) · [Release 1.2.1](https://github.com/rufpus/faketl/releases/tag/v1.2.1) · [Source](https://github.com/rufpus/faketl)
+
+![FTL icon](icons/icon128.png)
 
 ![FakeTL interface](verification/popup-en.png)
 
@@ -14,7 +16,7 @@ FakeTL позволяет выбрать язык и часовой пояс, к
 
 ### Установка и обновление
 
-1. Скачайте проект через **Code → Download ZIP** или распакуйте `FakeTL.zip`. В выбранной папке должны находиться `manifest.json`, файлы `.js`, `popup.html`, `popup.css` и каталог `icons`.
+1. Скачайте **`FakeTL-1.2.1.zip`** из [релиза](https://github.com/rufpus/faketl/releases/tag/v1.2.1) и распакуйте его. Также можно использовать **Code → Download ZIP** или локальный `FakeTL.zip`. В выбранной папке должны находиться `manifest.json`, файлы `.js`, `popup.html`, `popup.css` и каталог `icons`.
 2. Откройте `chrome://extensions` и включите **«Режим разработчика»**.
 3. Нажмите **«Загрузить распакованное расширение»**, выберите папку с `manifest.json`.
 4. В карточке FakeTL нажмите **«Подробнее»** и включите **«Разрешить пользовательские скрипты»**. Без этого доступа popup сообщит, что применение не подтверждено.
@@ -22,6 +24,8 @@ FakeTL позволяет выбрать язык и часовой пояс, к
 6. Откройте FakeTL, настройте профиль, нажмите **«Сохранить»**, дождитесь подтверждения и перезагрузите открытые страницы.
 
 При обновлении замените файлы в той же папке и нажмите **обновление расширения** в `chrome://extensions`, затем перезагрузите сайты. Существующие настройки сохраняются. Настройки версий 1.0/1.1 автоматически получают режим «везде, кроме списка» с пустым списком; выбранные зона и языки сохраняются.
+
+Версия **1.2.1** добавляет лаконичную иконку **FTL** в лавандово-бирюзовой палитре для панели Chrome и карточки расширения. Релиз содержит ZIP и файл SHA-256. [История изменений](CHANGELOG.md). Исходник — `icons/ftl.svg`, готовые PNG — 16/32/48/128 пикселей. Chrome использует PNG; SVG включён для редактирования. Для повторной генерации разработчиком: `python tools/generate-icons.py` (Pillow); для установки расширения Python не требуется.
 
 ### Язык, время и интерфейс
 
@@ -110,7 +114,7 @@ node tests/summarize.mjs
 
 В комплектной среде Codex используется имеющийся Playwright; для другого пути можно задать `PLAYWRIGHT_MODULE` с абсолютным путём к `playwright-core/index.mjs`. Тест создаёт отдельный `.test-profile/<timestamp>`, а домены `*.test` направляет на локальный сервер через DNS-настройку только тестового Chrome. **Эмуляция языка, зоны или Accept-Language не используется**. Основной профиль Chrome не меняется. После завершения временный профиль можно удалить; архив создаётся `python tests/package.py` и не включает профили/зависимости.
 
-**Фактически проверено 14 октября 2026:** Windows, Chrome 155.0.8059.40, FakeTL 1.2.0. Прошли 18 модульных тестов и 19 браузерных сценариев, включая исходные проверки, флаги RU/EN, оба режима сайтов, поддомены, сторонние запросы и iframe без Referer, пустой список включённых сайтов, добавление текущего сайта и сохранение списка. Подтверждены реальные заголовки навигации/fetch/скриптов, ранний inline-код, DST, сохранность timestamps/UTC, явные options и работа после остановки фонового worker. Отчёты: [summary](verification/browser-summary.json), [full report](verification/browser-report.json).
+**Фактически проверено 14 октября 2026:** Windows, Chrome 155.0.8059.40, FakeTL 1.2.1. Прошли 18 модульных тестов и 19 браузерных сценариев, включая исходные проверки, флаги RU/EN, оба режима сайтов, поддомены, сторонние запросы и iframe без Referer, пустой список включённых сайтов, добавление текущего сайта и сохранение списка. Подтверждены реальные заголовки навигации/fetch/скриптов, ранний inline-код, DST, сохранность timestamps/UTC, явные options и работа после остановки фонового worker. Отчёты: [summary](verification/browser-summary.json), [full report](verification/browser-report.json).
 
 **Не проверено полностью:** автоматический холодный запуск обычной установки через UI. Chrome действительно закрывался и запускался, настройки сохранились, но сессионную CDP-установку пришлось загрузить повторно. Отдельные HTTPS-проверки, Chrome 145, инкогнито, аварийное завершение, реальные обновления/отзыв разрешений, все sandbox/CSP/предварительно созданные документы и исторические зоны также не проверены. Нативное окно browser action визуально не проверено: тест открывает поставляемый popup.html во вкладке расширения. Границы workers, Temporal и data-фреймов фактически проверены и зафиксированы.
 
@@ -124,7 +128,7 @@ This Manifest V3 extension uses JavaScript, HTML and CSS. Its runtime needs no b
 
 ### Installation and updates
 
-1. Download the project with **Code → Download ZIP**, or extract `FakeTL.zip`. The selected folder must contain `manifest.json`, the JavaScript files, `popup.html`, `popup.css` and `icons`.
+1. Download **`FakeTL-1.2.1.zip`** from the [release](https://github.com/rufpus/faketl/releases/tag/v1.2.1) and extract it. **Code → Download ZIP** or the local `FakeTL.zip` also work. The selected folder must contain `manifest.json`, the JavaScript files, `popup.html`, `popup.css` and `icons`.
 2. Open `chrome://extensions` and enable **Developer mode**.
 3. Click **Load unpacked** and select the folder containing `manifest.json`.
 4. Open FakeTL’s **Details** and enable **Allow User Scripts**. Without this access the popup reports that application is not confirmed.
@@ -132,6 +136,8 @@ This Manifest V3 extension uses JavaScript, HTML and CSS. Its runtime needs no b
 6. Open FakeTL, configure the profile, click **Save**, wait for confirmation and reload open pages.
 
 To update, replace files in the same folder, click the extension’s **reload/update** button in `chrome://extensions`, then reload websites. Preferences are preserved. Settings from versions 1.0/1.1 migrate to “everywhere except the list” with an empty list, preserving the selected time zone and languages.
+
+Version **1.2.1** adds a minimal **FTL** icon in a lavender/teal palette for the Chrome toolbar and extension card. The release includes a ZIP and a SHA-256 file. [Changelog](CHANGELOG.md). Source: `icons/ftl.svg`; committed PNGs: 16/32/48/128 pixels. Chrome uses PNG; the SVG is provided for editing. Developers can regenerate them with `python tools/generate-icons.py` (Pillow); installing the extension needs no Python.
 
 ### Language, time and interface
 
@@ -220,7 +226,7 @@ node tests/summarize.mjs
 
 Codex’s bundled environment can use the existing Playwright; set PLAYWRIGHT_MODULE to an absolute playwright-core/index.mjs path elsewhere. The test uses an isolated `.test-profile/<timestamp>` and maps `*.test` to the local server only in that test Chrome’s DNS configuration. **No language, time-zone or Accept-Language emulation is used.** The main Chrome profile is untouched. Temporary test profiles can be deleted after completion. `python tests/package.py` creates an archive without profiles or dependencies.
 
-**Actually verified on October 14, 2026:** Windows, Chrome 155.0.8059.40, FakeTL 1.2.0. All 18 unit tests and 19 browser scenarios passed, including the original checks, RU/EN flags, both website modes, subdomains, third-party requests and frames without Referer, empty include lists, adding the current site and list persistence. Real navigation/fetch/script headers, early inline execution, DST, timestamps/UTC, explicit options and behavior while the background worker remains stopped were confirmed. Reports: [summary](verification/browser-summary.json), [full report](verification/browser-report.json).
+**Actually verified on October 14, 2026:** Windows, Chrome 155.0.8059.40, FakeTL 1.2.1. All 18 unit tests and 19 browser scenarios passed, including the original checks, RU/EN flags, both website modes, subdomains, third-party requests and frames without Referer, empty include lists, adding the current site and list persistence. Real navigation/fetch/script headers, early inline execution, DST, timestamps/UTC, explicit options and behavior while the background worker remains stopped were confirmed. Reports: [summary](verification/browser-summary.json), [full report](verification/browser-report.json).
 
 **Not fully verified:** automatic cold startup of a normal UI-installed unpacked extension. Chrome was closed and restarted, and preferences survived, but the session-only CDP installation needed loading again. Separate HTTPS tests, Chrome 145, incognito, crashes, real updates/permission revocation, all sandbox/CSP/pre-created documents and historical zones remain unverified. The native browser action window was not visually tested; the test opens the shipped popup.html in an extension tab. Worker, Temporal and data-frame boundaries were actually probed and recorded.
 

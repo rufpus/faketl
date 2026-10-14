@@ -128,6 +128,18 @@ try {
   await setup.close();
   let popup = await context.newPage();
   await popup.goto(`chrome-extension://${id}/popup.html`);
+  evidence.extension = await popup.evaluate(async () => {
+    const manifest = chrome.runtime.getManifest();
+    const icons = {};
+    for (const [size, file] of Object.entries(manifest.icons)) {
+      const image = new Image(); image.src = chrome.runtime.getURL(file); await image.decode();
+      icons[size] = {width: image.naturalWidth, height: image.naturalHeight, action: manifest.action.default_icon[size] === file};
+    }
+    return {version: manifest.version, icons};
+  });
+  for (const [size, icon] of Object.entries(evidence.extension.icons)) {
+    assert.equal(icon.width, Number(size)); assert.equal(icon.height, Number(size)); assert.equal(icon.action, true);
+  }
   await save(popup, 'UTC');
   evidence.permissions = await popup.evaluate(() => chrome.permissions.getAll());
   await inspectPage('UTC', [12, 12], [0, 0], 'UTC');

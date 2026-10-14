@@ -133,6 +133,14 @@
             ],
             "zone": "Europe/Moscow"
           },
+          "blob:": {
+            "language": "en-US",
+            "languages": [
+              "en-US",
+              "en"
+            ],
+            "zone": "UTC"
+          },
           "iframe другой origin": {
             "language": "en-US",
             "languages": [
@@ -141,14 +149,6 @@
             ],
             "zone": "UTC",
             "hours": 12
-          },
-          "blob:": {
-            "language": "en-US",
-            "languages": [
-              "en-US",
-              "en"
-            ],
-            "zone": "UTC"
           }
         },
         "workers": {
@@ -423,9 +423,9 @@
         "setter": "2026-03-08T02:30:00.000Z",
         "parse": 12,
         "number": "1,234.5",
-        "originalTime": 1791986050760,
-        "clockDifference": 0.39995117485523224,
-        "string": "Wed Oct 14 2026 13:54:10 GMT+0000 (Coordinated Universal Time)",
+        "originalTime": 1791987206415,
+        "clockDifference": 0.599902331829071,
+        "string": "Wed Oct 14 2026 14:13:26 GMT+0000 (Coordinated Universal Time)",
         "temporal": "Europe/Moscow",
         "calendarAgreement": true
       }
@@ -545,15 +545,6 @@
             ],
             "zone": "UTC"
           },
-          "iframe другой origin": {
-            "language": "en-US",
-            "languages": [
-              "en-US",
-              "en"
-            ],
-            "zone": "UTC",
-            "hours": 12
-          },
           "srcdoc": {
             "language": "en-US",
             "languages": [
@@ -588,6 +579,15 @@
               "en"
             ],
             "zone": "UTC"
+          },
+          "iframe другой origin": {
+            "language": "en-US",
+            "languages": [
+              "en-US",
+              "en"
+            ],
+            "zone": "UTC",
+            "hours": 12
           }
         },
         "workers": {
@@ -862,9 +862,9 @@
         "setter": "2026-03-08T02:30:00.000Z",
         "parse": 12,
         "number": "1,234.5",
-        "originalTime": 1791986053935,
-        "clockDifference": 0.3999999910593033,
-        "string": "Wed Oct 14 2026 13:54:13 GMT+0000 (Coordinated Universal Time)",
+        "originalTime": 1791987209788,
+        "clockDifference": 0.7999023348093033,
+        "string": "Wed Oct 14 2026 14:13:29 GMT+0000 (Coordinated Universal Time)",
         "temporal": "Europe/Moscow",
         "calendarAgreement": true
       }
@@ -975,18 +975,19 @@
             ],
             "zone": "Europe/Moscow"
           },
-          "iframe другой origin": {
+          "srcdoc": {
             "language": "en-US",
             "languages": [
               "en-US",
               "en"
             ],
-            "zone": "Europe/Moscow",
-            "hours": 15
+            "zone": "Europe/Moscow"
           },
-          "srcdoc": {
-            "language": "en-US",
+          "data:": {
+            "language": "ru-RU",
             "languages": [
+              "ru-RU",
+              "ru",
               "en-US",
               "en"
             ],
@@ -1001,16 +1002,6 @@
             "zone": "Europe/Moscow",
             "hours": 15
           },
-          "data:": {
-            "language": "ru-RU",
-            "languages": [
-              "ru-RU",
-              "ru",
-              "en-US",
-              "en"
-            ],
-            "zone": "Europe/Moscow"
-          },
           "blob:": {
             "language": "en-US",
             "languages": [
@@ -1018,6 +1009,15 @@
               "en"
             ],
             "zone": "Europe/Moscow"
+          },
+          "iframe другой origin": {
+            "language": "en-US",
+            "languages": [
+              "en-US",
+              "en"
+            ],
+            "zone": "Europe/Moscow",
+            "hours": 15
           }
         },
         "workers": {
@@ -1292,9 +1292,9 @@
         "setter": "2026-03-07T23:30:00.000Z",
         "parse": 12,
         "number": "1,234.5",
-        "originalTime": 1791986056747,
-        "clockDifference": 0.09999999403953552,
-        "string": "Wed Oct 14 2026 16:54:16 GMT+0300 (Moscow Standard Time)",
+        "originalTime": 1791987213865,
+        "clockDifference": 0.6999023407697678,
+        "string": "Wed Oct 14 2026 17:13:33 GMT+0300 (Moscow Standard Time)",
         "temporal": "Europe/Moscow",
         "calendarAgreement": true
       }
@@ -1413,15 +1413,6 @@
             ],
             "zone": "America/New_York"
           },
-          "iframe HTTP": {
-            "language": "en-US",
-            "languages": [
-              "en-US",
-              "en"
-            ],
-            "zone": "America/New_York",
-            "hours": 7
-          },
           "data:": {
             "language": "ru-RU",
             "languages": [
@@ -1432,7 +1423,15 @@
             ],
             "zone": "Europe/Moscow"
           },
-          "iframe другой origin": {
+          "blob:": {
+            "language": "en-US",
+            "languages": [
+              "en-US",
+              "en"
+            ],
+            "zone": "America/New_York"
+          },
+          "iframe HTTP": {
             "language": "en-US",
             "languages": [
               "en-US",
@@ -1441,16 +1440,103 @@
             "zone": "America/New_York",
             "hours": 7
           },
-          "blob:": {
+          "iframe другой origin": {
             "language": "en-US",
             "languages": [
               "en-US",
               "en"
             ],
-            "zone": "America/New_York"
+            "zone": "America/New_York",
+            "hours": 7
           }
         },
         "workers": {
+          "shared": {
+            "language": "ru-RU",
+            "languages": [
+              "ru-RU",
+              "ru",
+              "en-US",
+              "en"
+            ],
+            "zone": "Europe/Moscow",
+            "locale": "ru",
+            "explicit": {
+              "locale": "de-DE",
+              "zone": "Asia/Tokyo",
+              "hoursTokyo": "21"
+            },
+            "temporal": {
+              "available": true,
+              "zone": "Europe/Moscow"
+            },
+            "samples": [
+              {
+                "iso": "2026-01-15T12:34:56.789Z",
+                "timestamp": 1768480496789,
+                "value": 1768480496789,
+                "utc": [
+                  2026,
+                  0,
+                  15,
+                  12,
+                  34,
+                  56,
+                  789
+                ],
+                "offset": -180,
+                "local": [
+                  2026,
+                  0,
+                  15,
+                  15,
+                  34,
+                  56,
+                  789,
+                  4
+                ],
+                "string": "Thu Jan 15 2026 15:34:56 GMT+0300 (Москва, стандартное время)",
+                "dateString": "Thu Jan 15 2026",
+                "timeString": "15:34:56 GMT+0300 (Москва, стандартное время)",
+                "localeString": "15.01.2026, 15:34:56",
+                "localeDate": "15.01.2026",
+                "localeTime": "15:34:56",
+                "intl": "четверг, 15 января 2026 г. в 15:34:56 GMT+3"
+              },
+              {
+                "iso": "2026-07-15T12:34:56.789Z",
+                "timestamp": 1784118896789,
+                "value": 1784118896789,
+                "utc": [
+                  2026,
+                  6,
+                  15,
+                  12,
+                  34,
+                  56,
+                  789
+                ],
+                "offset": -180,
+                "local": [
+                  2026,
+                  6,
+                  15,
+                  15,
+                  34,
+                  56,
+                  789,
+                  3
+                ],
+                "string": "Wed Jul 15 2026 15:34:56 GMT+0300 (Москва, стандартное время)",
+                "dateString": "Wed Jul 15 2026",
+                "timeString": "15:34:56 GMT+0300 (Москва, стандартное время)",
+                "localeString": "15.07.2026, 15:34:56",
+                "localeDate": "15.07.2026",
+                "localeTime": "15:34:56",
+                "intl": "среда, 15 июля 2026 г. в 15:34:56 GMT+3"
+              }
+            ]
+          },
           "service": {
             "language": "ru-RU",
             "languages": [
@@ -1622,92 +1708,6 @@
                 "intl": "среда, 15 июля 2026 г. в 15:34:56 GMT+3"
               }
             ]
-          },
-          "shared": {
-            "language": "ru-RU",
-            "languages": [
-              "ru-RU",
-              "ru",
-              "en-US",
-              "en"
-            ],
-            "zone": "Europe/Moscow",
-            "locale": "ru",
-            "explicit": {
-              "locale": "de-DE",
-              "zone": "Asia/Tokyo",
-              "hoursTokyo": "21"
-            },
-            "temporal": {
-              "available": true,
-              "zone": "Europe/Moscow"
-            },
-            "samples": [
-              {
-                "iso": "2026-01-15T12:34:56.789Z",
-                "timestamp": 1768480496789,
-                "value": 1768480496789,
-                "utc": [
-                  2026,
-                  0,
-                  15,
-                  12,
-                  34,
-                  56,
-                  789
-                ],
-                "offset": -180,
-                "local": [
-                  2026,
-                  0,
-                  15,
-                  15,
-                  34,
-                  56,
-                  789,
-                  4
-                ],
-                "string": "Thu Jan 15 2026 15:34:56 GMT+0300 (Москва, стандартное время)",
-                "dateString": "Thu Jan 15 2026",
-                "timeString": "15:34:56 GMT+0300 (Москва, стандартное время)",
-                "localeString": "15.01.2026, 15:34:56",
-                "localeDate": "15.01.2026",
-                "localeTime": "15:34:56",
-                "intl": "четверг, 15 января 2026 г. в 15:34:56 GMT+3"
-              },
-              {
-                "iso": "2026-07-15T12:34:56.789Z",
-                "timestamp": 1784118896789,
-                "value": 1784118896789,
-                "utc": [
-                  2026,
-                  6,
-                  15,
-                  12,
-                  34,
-                  56,
-                  789
-                ],
-                "offset": -180,
-                "local": [
-                  2026,
-                  6,
-                  15,
-                  15,
-                  34,
-                  56,
-                  789,
-                  3
-                ],
-                "string": "Wed Jul 15 2026 15:34:56 GMT+0300 (Москва, стандартное время)",
-                "dateString": "Wed Jul 15 2026",
-                "timeString": "15:34:56 GMT+0300 (Москва, стандартное время)",
-                "localeString": "15.07.2026, 15:34:56",
-                "localeDate": "15.07.2026",
-                "localeTime": "15:34:56",
-                "intl": "среда, 15 июля 2026 г. в 15:34:56 GMT+3"
-              }
-            ]
           }
         },
         "http": {
@@ -1722,9 +1722,9 @@
         "setter": "2026-03-08T07:30:00.000Z",
         "parse": 12,
         "number": "1,234.5",
-        "originalTime": 1791986058666,
-        "clockDifference": 0.9000488221645355,
-        "string": "Wed Oct 14 2026 09:54:18 GMT-0400 (Eastern Daylight Time)",
+        "originalTime": 1791987216248,
+        "clockDifference": 0.09995116293430328,
+        "string": "Wed Oct 14 2026 10:13:36 GMT-0400 (Eastern Daylight Time)",
         "temporal": "Europe/Moscow",
         "calendarAgreement": true
       }
@@ -1835,23 +1835,6 @@
             ],
             "zone": "America/New_York"
           },
-          "srcdoc": {
-            "language": "en-US",
-            "languages": [
-              "en-US",
-              "en"
-            ],
-            "zone": "America/New_York"
-          },
-          "iframe HTTP": {
-            "language": "en-US",
-            "languages": [
-              "en-US",
-              "en"
-            ],
-            "zone": "America/New_York",
-            "hours": 7
-          },
           "data:": {
             "language": "ru-RU",
             "languages": [
@@ -1869,6 +1852,23 @@
               "en"
             ],
             "zone": "America/New_York"
+          },
+          "srcdoc": {
+            "language": "en-US",
+            "languages": [
+              "en-US",
+              "en"
+            ],
+            "zone": "America/New_York"
+          },
+          "iframe HTTP": {
+            "language": "en-US",
+            "languages": [
+              "en-US",
+              "en"
+            ],
+            "zone": "America/New_York",
+            "hours": 7
           },
           "iframe другой origin": {
             "language": "en-US",
@@ -2052,92 +2052,6 @@
                 "intl": "среда, 15 июля 2026 г. в 15:34:56 GMT+3"
               }
             ]
-          },
-          "shared": {
-            "language": "ru-RU",
-            "languages": [
-              "ru-RU",
-              "ru",
-              "en-US",
-              "en"
-            ],
-            "zone": "Europe/Moscow",
-            "locale": "ru",
-            "explicit": {
-              "locale": "de-DE",
-              "zone": "Asia/Tokyo",
-              "hoursTokyo": "21"
-            },
-            "temporal": {
-              "available": true,
-              "zone": "Europe/Moscow"
-            },
-            "samples": [
-              {
-                "iso": "2026-01-15T12:34:56.789Z",
-                "timestamp": 1768480496789,
-                "value": 1768480496789,
-                "utc": [
-                  2026,
-                  0,
-                  15,
-                  12,
-                  34,
-                  56,
-                  789
-                ],
-                "offset": -180,
-                "local": [
-                  2026,
-                  0,
-                  15,
-                  15,
-                  34,
-                  56,
-                  789,
-                  4
-                ],
-                "string": "Thu Jan 15 2026 15:34:56 GMT+0300 (Москва, стандартное время)",
-                "dateString": "Thu Jan 15 2026",
-                "timeString": "15:34:56 GMT+0300 (Москва, стандартное время)",
-                "localeString": "15.01.2026, 15:34:56",
-                "localeDate": "15.01.2026",
-                "localeTime": "15:34:56",
-                "intl": "четверг, 15 января 2026 г. в 15:34:56 GMT+3"
-              },
-              {
-                "iso": "2026-07-15T12:34:56.789Z",
-                "timestamp": 1784118896789,
-                "value": 1784118896789,
-                "utc": [
-                  2026,
-                  6,
-                  15,
-                  12,
-                  34,
-                  56,
-                  789
-                ],
-                "offset": -180,
-                "local": [
-                  2026,
-                  6,
-                  15,
-                  15,
-                  34,
-                  56,
-                  789,
-                  3
-                ],
-                "string": "Wed Jul 15 2026 15:34:56 GMT+0300 (Москва, стандартное время)",
-                "dateString": "Wed Jul 15 2026",
-                "timeString": "15:34:56 GMT+0300 (Москва, стандартное время)",
-                "localeString": "15.07.2026, 15:34:56",
-                "localeDate": "15.07.2026",
-                "localeTime": "15:34:56",
-                "intl": "среда, 15 июля 2026 г. в 15:34:56 GMT+3"
-              }
-            ]
           }
         },
         "http": {
@@ -2152,9 +2066,9 @@
         "setter": "2026-03-08T07:30:00.000Z",
         "parse": 12,
         "number": "1,234.5",
-        "originalTime": 1791986059074,
-        "clockDifference": 0.20009765028953552,
-        "string": "Wed Oct 14 2026 09:54:19 GMT-0400 (Eastern Daylight Time)",
+        "originalTime": 1791987216842,
+        "clockDifference": 0.09990234673023224,
+        "string": "Wed Oct 14 2026 10:13:36 GMT-0400 (Eastern Daylight Time)",
         "temporal": "Europe/Moscow",
         "calendarAgreement": true
       }
@@ -2273,15 +2187,6 @@
             ],
             "zone": "America/New_York"
           },
-          "iframe другой origin": {
-            "language": "en-US",
-            "languages": [
-              "en-US",
-              "en"
-            ],
-            "zone": "America/New_York",
-            "hours": 7
-          },
           "iframe HTTP": {
             "language": "en-US",
             "languages": [
@@ -2308,10 +2213,19 @@
               "en"
             ],
             "zone": "America/New_York"
+          },
+          "iframe другой origin": {
+            "language": "en-US",
+            "languages": [
+              "en-US",
+              "en"
+            ],
+            "zone": "America/New_York",
+            "hours": 7
           }
         },
         "workers": {
-          "dedicated": {
+          "service": {
             "language": "ru-RU",
             "languages": [
               "ru-RU",
@@ -2397,7 +2311,7 @@
               }
             ]
           },
-          "service": {
+          "dedicated": {
             "language": "ru-RU",
             "languages": [
               "ru-RU",
@@ -2582,9 +2496,9 @@
         "setter": "2026-03-08T07:30:00.000Z",
         "parse": 12,
         "number": "1,234.5",
-        "originalTime": 1791986064678,
-        "clockDifference": 0.9000000059604645,
-        "string": "Wed Oct 14 2026 09:54:24 GMT-0400 (Eastern Daylight Time)",
+        "originalTime": 1791987220864,
+        "clockDifference": 0.7000488340854645,
+        "string": "Wed Oct 14 2026 10:13:40 GMT-0400 (Eastern Daylight Time)",
         "temporal": "Europe/Moscow",
         "calendarAgreement": true
       }
@@ -2826,92 +2740,6 @@
                   "intl": "среда, 15 июля 2026 г. в 15:34:56 GMT+3"
                 }
               ]
-            },
-            "shared": {
-              "language": "ru-RU",
-              "languages": [
-                "ru-RU",
-                "ru",
-                "en-US",
-                "en"
-              ],
-              "zone": "Europe/Moscow",
-              "locale": "ru",
-              "explicit": {
-                "locale": "de-DE",
-                "zone": "Asia/Tokyo",
-                "hoursTokyo": "21"
-              },
-              "temporal": {
-                "available": true,
-                "zone": "Europe/Moscow"
-              },
-              "samples": [
-                {
-                  "iso": "2026-01-15T12:34:56.789Z",
-                  "timestamp": 1768480496789,
-                  "value": 1768480496789,
-                  "utc": [
-                    2026,
-                    0,
-                    15,
-                    12,
-                    34,
-                    56,
-                    789
-                  ],
-                  "offset": -180,
-                  "local": [
-                    2026,
-                    0,
-                    15,
-                    15,
-                    34,
-                    56,
-                    789,
-                    4
-                  ],
-                  "string": "Thu Jan 15 2026 15:34:56 GMT+0300 (Москва, стандартное время)",
-                  "dateString": "Thu Jan 15 2026",
-                  "timeString": "15:34:56 GMT+0300 (Москва, стандартное время)",
-                  "localeString": "15.01.2026, 15:34:56",
-                  "localeDate": "15.01.2026",
-                  "localeTime": "15:34:56",
-                  "intl": "четверг, 15 января 2026 г. в 15:34:56 GMT+3"
-                },
-                {
-                  "iso": "2026-07-15T12:34:56.789Z",
-                  "timestamp": 1784118896789,
-                  "value": 1784118896789,
-                  "utc": [
-                    2026,
-                    6,
-                    15,
-                    12,
-                    34,
-                    56,
-                    789
-                  ],
-                  "offset": -180,
-                  "local": [
-                    2026,
-                    6,
-                    15,
-                    15,
-                    34,
-                    56,
-                    789,
-                    3
-                  ],
-                  "string": "Wed Jul 15 2026 15:34:56 GMT+0300 (Москва, стандартное время)",
-                  "dateString": "Wed Jul 15 2026",
-                  "timeString": "15:34:56 GMT+0300 (Москва, стандартное время)",
-                  "localeString": "15.07.2026, 15:34:56",
-                  "localeDate": "15.07.2026",
-                  "localeTime": "15:34:56",
-                  "intl": "среда, 15 июля 2026 г. в 15:34:56 GMT+3"
-                }
-              ]
             }
           },
           "http": {
@@ -3028,14 +2856,14 @@
             "hours": 15
           },
           "navigationHeader": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
-          "http": {
-            "path": "/echo?kind=scope-main",
-            "host": "sub.alpha.test:8787",
-            "acceptLanguage": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
-          },
           "thirdParty": {
             "path": "/echo?kind=scope-third-party",
             "host": "assets.test:8787",
+            "acceptLanguage": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
+          },
+          "http": {
+            "path": "/echo?kind=scope-main",
+            "host": "sub.alpha.test:8787",
             "acceptLanguage": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
           },
           "frame": {
@@ -3122,14 +2950,14 @@
             "hours": 12
           },
           "navigationHeader": "en-US,en;q=0.9",
-          "http": {
-            "path": "/echo?kind=scope-main",
-            "host": "alpha.test:8787",
-            "acceptLanguage": "en-US,en;q=0.9"
-          },
           "thirdParty": {
             "path": "/echo?kind=scope-third-party",
             "host": "assets.test:8787",
+            "acceptLanguage": "en-US,en;q=0.9"
+          },
+          "http": {
+            "path": "/echo?kind=scope-main",
+            "host": "alpha.test:8787",
             "acceptLanguage": "en-US,en;q=0.9"
           },
           "frame": {
@@ -3479,17 +3307,6 @@
             ],
             "zone": "Europe/Moscow"
           },
-          "iframe другой origin": {
-            "language": "ru-RU",
-            "languages": [
-              "ru-RU",
-              "ru",
-              "en-US",
-              "en"
-            ],
-            "zone": "Europe/Moscow",
-            "hours": 15
-          },
           "data:": {
             "language": "ru-RU",
             "languages": [
@@ -3509,6 +3326,17 @@
               "en"
             ],
             "zone": "Europe/Moscow"
+          },
+          "iframe другой origin": {
+            "language": "ru-RU",
+            "languages": [
+              "ru-RU",
+              "ru",
+              "en-US",
+              "en"
+            ],
+            "zone": "Europe/Moscow",
+            "hours": 15
           }
         },
         "workers": {
@@ -3796,6 +3624,31 @@
     "extensions": []
   },
   "extensionId": "poihmjhiecljhjpecnepfddpkdbgjmhk",
+  "extension": {
+    "version": "1.2.1",
+    "icons": {
+      "16": {
+        "width": 16,
+        "height": 16,
+        "action": true
+      },
+      "32": {
+        "width": 32,
+        "height": 32,
+        "action": true
+      },
+      "48": {
+        "width": 48,
+        "height": 48,
+        "action": true
+      },
+      "128": {
+        "width": 128,
+        "height": 128,
+        "action": true
+      }
+    }
+  },
   "permissions": {
     "origins": [
       "http://*/*",
@@ -3817,9 +3670,9 @@
       "scriptLastModified": 1791985272,
       "scriptResponseTime": 0,
       "controlledClients": [
-        "BA1C4E48311D2B2292B48C5429320F8B"
+        "94B25CFBDD9C8F79EC65901B4E769CE7"
       ],
-      "targetId": "6D39089B263365AB04DD1B3C1AF0C97F"
+      "targetId": "A1F261D6762A66863748CBC2C2778BD9"
     },
     {
       "versionId": "0",
@@ -3830,9 +3683,9 @@
       "scriptLastModified": 1791985272,
       "scriptResponseTime": 0,
       "controlledClients": [
-        "BA1C4E48311D2B2292B48C5429320F8B"
+        "94B25CFBDD9C8F79EC65901B4E769CE7"
       ],
-      "targetId": "6D39089B263365AB04DD1B3C1AF0C97F"
+      "targetId": "A1F261D6762A66863748CBC2C2778BD9"
     },
     {
       "versionId": "0",
@@ -3843,7 +3696,7 @@
       "scriptLastModified": 1791985272,
       "scriptResponseTime": 0,
       "controlledClients": [
-        "BA1C4E48311D2B2292B48C5429320F8B"
+        "94B25CFBDD9C8F79EC65901B4E769CE7"
       ]
     }
   ]

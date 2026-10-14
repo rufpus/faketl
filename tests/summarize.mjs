@@ -6,6 +6,7 @@ const raw = await readFile(path.join(root, 'test-results/browser.json'), 'utf8')
 const report = JSON.parse(raw);
 const summary = {
   date: '2026-10-14', browser: report.browser.product,
+  extension: report.extension,
   extensionActuallyLoaded: true, timezoneOrLocaleEmulationUsed: false,
   unitTests: {passed: 18, command: 'node --test tests/*.test.js'},
   browserError: report.error || null,
