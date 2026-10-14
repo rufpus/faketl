@@ -1,0 +1,27 @@
+:root { color-scheme: light; font: 13px/1.45 system-ui, sans-serif; color: #172b3b; background: #f7f9fc; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 14px; width: 390px; max-height: 600px; overflow-y: auto; }
+h1 { font-size: 17px; margin: 0 0 8px; }
+header { margin-bottom: 10px; }
+.brand-row { display: flex; align-items: start; justify-content: space-between; margin-bottom: 10px; }
+.brand-row h1 { margin: 0; font-size: 21px; }
+.brand-subtitle { color: #526171; font-size: 11px; }
+.interface-language { width: 120px; font-size: 11px; color: #526171; }
+.interface-language select { margin-top: 3px; font-size: 12px; padding: 4px; }
+.toggle { display: flex; gap: 8px; align-items: center; font-weight: 600; }
+form > label { display: block; margin: 8px 0 4px; font-weight: 600; }
+input:not([type=checkbox]), select, textarea { width: 100%; padding: 8px; border: 1px solid #bac6d3; border-radius: 6px; background: #fff; color: inherit; font: inherit; }
+select { margin-top: 6px; padding: 4px; }
+option { padding: 2px; }
+textarea { resize: vertical; }
+input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px solid #296bcc; outline-offset: 2px; }
+.hint { font-size: 11px; color: #526171; margin: 6px 0; }
+button { width: 100%; padding: 10px; background: #225fc0; color: white; border: 0; border-radius: 7px; font: inherit; font-weight: 600; cursor: pointer; }
+button:disabled { opacity: .6; cursor: wait; }
+.secondary { background: #e7edf7; color: #1c4c90; }
+section { background: #fff; border: 1px solid #dbe2ed; padding: 10px; margin-top: 15px; border-radius: 7px; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 12px/1.5 ui-monospace, monospace; margin: 5px 0 0; }
+#message { margin: 9px 0; overflow-wrap: anywhere; }
+#message.error { color: #a21c16; }
+#message.success { color: #1a7042; }
+.reload-note { font-size: 12px; color: #526171; }

@@ -1,0 +1,7 @@
+node_modules/
+.test-profile/
+.test-browser/
+test-results/
+*.zip
+__pycache__/
+extension-setup-debug.html

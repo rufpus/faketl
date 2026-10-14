@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FakeTL · FakeTimeLanguage</title><link rel="stylesheet" href="popup.css"></head>
+<body>
+  <header>
+    <div class="brand-row"><div><h1>FakeTL</h1><span class="brand-subtitle">FakeTimeLanguage</span></div>
+      <label class="interface-language"><span data-i18n="interfaceLanguage">Интерфейс</span><select id="ui-language" aria-label="Язык интерфейса"><option value="ru">Русский</option><option value="en">English</option></select></label>
+    </div>
+    <label class="toggle"><input id="enabled" type="checkbox"> <span data-i18n="enabled">Подмена включена</span></label>
+  </header>
+  <form id="settings-form">
+    <label for="zone-search" data-i18n="timeZone">Часовой пояс IANA</label>
+    <input id="zone-search" type="search" data-i18n-placeholder="zoneSearch" placeholder="Поиск: Москва, Tokyo, UTC…" autocomplete="off">
+    <select id="time-zone" size="3" data-i18n-aria="timeZone" aria-label="Часовой пояс"></select>
+    <p id="zone-info" class="hint"></p>
+    <label for="primary-language" data-i18n="primaryLanguage">Основной язык (BCP 47)</label>
+    <input id="primary-language" list="language-examples" value="en-US" required maxlength="100" autocomplete="off">
+    <datalist id="language-examples"><option value="en-US"><option value="en-GB"><option value="ru-RU"><option value="de-DE"><option value="fr-FR"><option value="ja-JP"><option value="zh-CN"><option value="es-ES"></datalist>
+    <label for="other-languages" data-i18n="otherLanguages">Остальные языки по приоритету</label>
+    <textarea id="other-languages" rows="1" data-i18n-placeholder="languagesPlaceholder" placeholder="en, de-DE — через запятую или с новой строки" maxlength="1000"></textarea>
+    <p class="hint" data-i18n="languageHint">Основной язык первый. До 10 языков; повторы удаляются.</p>
+    <button id="save" type="submit" data-i18n="save" disabled>Сохранить и применить</button>
+  </form>
+  <section data-i18n-aria="active" aria-label="Активная конфигурация"><strong data-i18n="active">Активная конфигурация</strong><pre id="active">Проверка…</pre></section>
+  <p id="message" role="status" aria-live="polite"></p>
+  <p class="reload-note" data-i18n="reloadNote">После изменения настроек перезагрузите открытые страницы.</p>
+  <button id="reload" type="button" class="secondary" data-i18n="reload">Перезагрузить текущую страницу</button>
+  <script src="popup.js" type="module"></script>
+</body></html>

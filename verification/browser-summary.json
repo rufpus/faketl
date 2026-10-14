@@ -1,0 +1,1288 @@
+{
+  "date": "2026-10-14",
+  "browser": "Chrome/155.0.8059.40",
+  "extensionActuallyLoaded": true,
+  "timezoneOrLocaleEmulationUsed": false,
+  "unitTests": {
+    "passed": 13,
+    "command": "node --test tests/*.test.js"
+  },
+  "browserError": null,
+  "warnings": [
+    "CDP loads an extension for the current browser session. After real browser restart the extension had to be loaded again; automatic restoration of a normally installed unpacked extension remains unverified."
+  ],
+  "popupTesting": "Shipped popup.html in an extension tab; reload button exercised on the active HTTP tab. Native browser action window not visually verified.",
+  "scenarios": [
+    {
+      "name": "UTC",
+      "early": {
+        "language": "en-US",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "zone": "UTC",
+        "hours": 12
+      },
+      "navigator": {
+        "language": "en-US",
+        "languages": [
+          "en-US",
+          "en"
+        ]
+      },
+      "zone": "UTC",
+      "locale": "en-US",
+      "headerReceivedByServer": "en-US,en;q=0.9",
+      "explicitOptions": {
+        "locale": "de-DE",
+        "zone": "Asia/Tokyo",
+        "hoursTokyo": "21"
+      },
+      "dates": [
+        {
+          "iso": "2026-01-15T12:34:56.789Z",
+          "timestamp": 1768480496789,
+          "offset": 0,
+          "local": [
+            2026,
+            0,
+            15,
+            12,
+            34,
+            56,
+            789,
+            4
+          ],
+          "utc": [
+            2026,
+            0,
+            15,
+            12,
+            34,
+            56,
+            789
+          ]
+        },
+        {
+          "iso": "2026-07-15T12:34:56.789Z",
+          "timestamp": 1784118896789,
+          "offset": 0,
+          "local": [
+            2026,
+            6,
+            15,
+            12,
+            34,
+            56,
+            789,
+            3
+          ],
+          "utc": [
+            2026,
+            6,
+            15,
+            12,
+            34,
+            56,
+            789
+          ]
+        }
+      ],
+      "frames": {
+        "about:blank": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "UTC"
+        },
+        "iframe другой origin": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "UTC",
+          "hours": 12
+        },
+        "srcdoc": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "UTC"
+        },
+        "iframe HTTP": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "UTC",
+          "hours": 12
+        },
+        "data:": {
+          "language": "ru-RU",
+          "languages": [
+            "ru-RU",
+            "ru",
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow"
+        },
+        "blob:": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "UTC"
+        }
+      },
+      "temporal": {
+        "available": true,
+        "zone": "Europe/Moscow"
+      },
+      "workers": {
+        "dedicated": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        },
+        "shared": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        },
+        "service": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        }
+      },
+      "additionalChecks": {
+        "gap": "2026-03-08T02:30:00.000Z",
+        "overlap": "2026-11-01T01:30:00.000Z",
+        "setter": "2026-03-08T02:30:00.000Z",
+        "parse": 12,
+        "number": "1,234.5",
+        "originalTime": 1791983631886,
+        "clockDifference": 0.49995116889476776,
+        "string": "Wed Oct 14 2026 13:13:51 GMT+0000 (Coordinated Universal Time)",
+        "temporal": "Europe/Moscow",
+        "calendarAgreement": true
+      }
+    },
+    {
+      "name": "English/Russian interface switch",
+      "interfaceChecks": {
+        "persisted": true,
+        "draftsPreserved": true,
+        "websiteSettingsUnchanged": true,
+        "errorsLocalized": true
+      }
+    },
+    {
+      "name": "UTC, strict CSP",
+      "early": {
+        "language": "en-US",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "zone": "UTC",
+        "hours": 12
+      },
+      "navigator": {
+        "language": "en-US",
+        "languages": [
+          "en-US",
+          "en"
+        ]
+      },
+      "zone": "UTC",
+      "locale": "en-US",
+      "headerReceivedByServer": "en-US,en;q=0.9",
+      "explicitOptions": {
+        "locale": "de-DE",
+        "zone": "Asia/Tokyo",
+        "hoursTokyo": "21"
+      },
+      "dates": [
+        {
+          "iso": "2026-01-15T12:34:56.789Z",
+          "timestamp": 1768480496789,
+          "offset": 0,
+          "local": [
+            2026,
+            0,
+            15,
+            12,
+            34,
+            56,
+            789,
+            4
+          ],
+          "utc": [
+            2026,
+            0,
+            15,
+            12,
+            34,
+            56,
+            789
+          ]
+        },
+        {
+          "iso": "2026-07-15T12:34:56.789Z",
+          "timestamp": 1784118896789,
+          "offset": 0,
+          "local": [
+            2026,
+            6,
+            15,
+            12,
+            34,
+            56,
+            789,
+            3
+          ],
+          "utc": [
+            2026,
+            6,
+            15,
+            12,
+            34,
+            56,
+            789
+          ]
+        }
+      ],
+      "frames": {
+        "about:blank": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "UTC"
+        },
+        "srcdoc": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "UTC"
+        },
+        "iframe другой origin": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "UTC",
+          "hours": 12
+        },
+        "iframe HTTP": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "UTC",
+          "hours": 12
+        },
+        "data:": {
+          "language": "ru-RU",
+          "languages": [
+            "ru-RU",
+            "ru",
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow"
+        },
+        "blob:": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "UTC"
+        }
+      },
+      "temporal": {
+        "available": true,
+        "zone": "Europe/Moscow"
+      },
+      "workers": {
+        "service": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        },
+        "dedicated": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        },
+        "shared": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        }
+      },
+      "additionalChecks": {
+        "gap": "2026-03-08T02:30:00.000Z",
+        "overlap": "2026-11-01T01:30:00.000Z",
+        "setter": "2026-03-08T02:30:00.000Z",
+        "parse": 12,
+        "number": "1,234.5",
+        "originalTime": 1791983633829,
+        "clockDifference": 0.7000488340854645,
+        "string": "Wed Oct 14 2026 13:13:53 GMT+0000 (Coordinated Universal Time)",
+        "temporal": "Europe/Moscow",
+        "calendarAgreement": true
+      }
+    },
+    {
+      "name": "Moscow",
+      "early": {
+        "language": "en-US",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "zone": "Europe/Moscow",
+        "hours": 15
+      },
+      "navigator": {
+        "language": "en-US",
+        "languages": [
+          "en-US",
+          "en"
+        ]
+      },
+      "zone": "Europe/Moscow",
+      "locale": "en-US",
+      "headerReceivedByServer": "en-US,en;q=0.9",
+      "explicitOptions": {
+        "locale": "de-DE",
+        "zone": "Asia/Tokyo",
+        "hoursTokyo": "21"
+      },
+      "dates": [
+        {
+          "iso": "2026-01-15T12:34:56.789Z",
+          "timestamp": 1768480496789,
+          "offset": -180,
+          "local": [
+            2026,
+            0,
+            15,
+            15,
+            34,
+            56,
+            789,
+            4
+          ],
+          "utc": [
+            2026,
+            0,
+            15,
+            12,
+            34,
+            56,
+            789
+          ]
+        },
+        {
+          "iso": "2026-07-15T12:34:56.789Z",
+          "timestamp": 1784118896789,
+          "offset": -180,
+          "local": [
+            2026,
+            6,
+            15,
+            15,
+            34,
+            56,
+            789,
+            3
+          ],
+          "utc": [
+            2026,
+            6,
+            15,
+            12,
+            34,
+            56,
+            789
+          ]
+        }
+      ],
+      "frames": {
+        "about:blank": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow"
+        },
+        "srcdoc": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow"
+        },
+        "iframe HTTP": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow",
+          "hours": 15
+        },
+        "iframe другой origin": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow",
+          "hours": 15
+        },
+        "data:": {
+          "language": "ru-RU",
+          "languages": [
+            "ru-RU",
+            "ru",
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow"
+        },
+        "blob:": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow"
+        }
+      },
+      "temporal": {
+        "available": true,
+        "zone": "Europe/Moscow"
+      },
+      "workers": {
+        "service": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        },
+        "dedicated": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        },
+        "shared": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        }
+      },
+      "additionalChecks": {
+        "gap": "2026-03-07T23:30:00.000Z",
+        "overlap": "2026-10-31T22:30:00.000Z",
+        "setter": "2026-03-07T23:30:00.000Z",
+        "parse": 12,
+        "number": "1,234.5",
+        "originalTime": 1791983634738,
+        "clockDifference": 0.9999023526906967,
+        "string": "Wed Oct 14 2026 16:13:54 GMT+0300 (Moscow Standard Time)",
+        "temporal": "Europe/Moscow",
+        "calendarAgreement": true
+      }
+    },
+    {
+      "name": "New York",
+      "early": {
+        "language": "en-US",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "zone": "America/New_York",
+        "hours": 7
+      },
+      "navigator": {
+        "language": "en-US",
+        "languages": [
+          "en-US",
+          "en"
+        ]
+      },
+      "zone": "America/New_York",
+      "locale": "en-US",
+      "headerReceivedByServer": "en-US,en;q=0.9",
+      "explicitOptions": {
+        "locale": "de-DE",
+        "zone": "Asia/Tokyo",
+        "hoursTokyo": "21"
+      },
+      "dates": [
+        {
+          "iso": "2026-01-15T12:34:56.789Z",
+          "timestamp": 1768480496789,
+          "offset": 300,
+          "local": [
+            2026,
+            0,
+            15,
+            7,
+            34,
+            56,
+            789,
+            4
+          ],
+          "utc": [
+            2026,
+            0,
+            15,
+            12,
+            34,
+            56,
+            789
+          ]
+        },
+        {
+          "iso": "2026-07-15T12:34:56.789Z",
+          "timestamp": 1784118896789,
+          "offset": 240,
+          "local": [
+            2026,
+            6,
+            15,
+            8,
+            34,
+            56,
+            789,
+            3
+          ],
+          "utc": [
+            2026,
+            6,
+            15,
+            12,
+            34,
+            56,
+            789
+          ]
+        }
+      ],
+      "frames": {
+        "about:blank": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "America/New_York"
+        },
+        "srcdoc": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "America/New_York"
+        },
+        "iframe HTTP": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "America/New_York",
+          "hours": 7
+        },
+        "data:": {
+          "language": "ru-RU",
+          "languages": [
+            "ru-RU",
+            "ru",
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow"
+        },
+        "iframe другой origin": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "America/New_York",
+          "hours": 7
+        },
+        "blob:": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "America/New_York"
+        }
+      },
+      "temporal": {
+        "available": true,
+        "zone": "Europe/Moscow"
+      },
+      "workers": {
+        "service": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        },
+        "dedicated": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        },
+        "shared": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        }
+      },
+      "additionalChecks": {
+        "gap": "2026-03-08T07:30:00.000Z",
+        "overlap": "2026-11-01T05:30:00.000Z",
+        "setter": "2026-03-08T07:30:00.000Z",
+        "parse": 12,
+        "number": "1,234.5",
+        "originalTime": 1791983635686,
+        "clockDifference": 0.699999988079071,
+        "string": "Wed Oct 14 2026 09:13:55 GMT-0400 (Eastern Daylight Time)",
+        "temporal": "Europe/Moscow",
+        "calendarAgreement": true
+      }
+    },
+    {
+      "name": "Stopped extension service worker",
+      "early": {
+        "language": "en-US",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "zone": "America/New_York",
+        "hours": 7
+      },
+      "navigator": {
+        "language": "en-US",
+        "languages": [
+          "en-US",
+          "en"
+        ]
+      },
+      "zone": "America/New_York",
+      "locale": "en-US",
+      "headerReceivedByServer": "en-US,en;q=0.9",
+      "explicitOptions": {
+        "locale": "de-DE",
+        "zone": "Asia/Tokyo",
+        "hoursTokyo": "21"
+      },
+      "dates": [
+        {
+          "iso": "2026-01-15T12:34:56.789Z",
+          "timestamp": 1768480496789,
+          "offset": 300,
+          "local": [
+            2026,
+            0,
+            15,
+            7,
+            34,
+            56,
+            789,
+            4
+          ],
+          "utc": [
+            2026,
+            0,
+            15,
+            12,
+            34,
+            56,
+            789
+          ]
+        },
+        {
+          "iso": "2026-07-15T12:34:56.789Z",
+          "timestamp": 1784118896789,
+          "offset": 240,
+          "local": [
+            2026,
+            6,
+            15,
+            8,
+            34,
+            56,
+            789,
+            3
+          ],
+          "utc": [
+            2026,
+            6,
+            15,
+            12,
+            34,
+            56,
+            789
+          ]
+        }
+      ],
+      "frames": {
+        "about:blank": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "America/New_York"
+        },
+        "srcdoc": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "America/New_York"
+        },
+        "iframe HTTP": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "America/New_York",
+          "hours": 7
+        },
+        "data:": {
+          "language": "ru-RU",
+          "languages": [
+            "ru-RU",
+            "ru",
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow"
+        },
+        "blob:": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "America/New_York"
+        },
+        "iframe другой origin": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "America/New_York",
+          "hours": 7
+        }
+      },
+      "temporal": {
+        "available": true,
+        "zone": "Europe/Moscow"
+      },
+      "workers": {
+        "service": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        },
+        "dedicated": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        },
+        "shared": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        }
+      },
+      "additionalChecks": {
+        "gap": "2026-03-08T07:30:00.000Z",
+        "overlap": "2026-11-01T05:30:00.000Z",
+        "setter": "2026-03-08T07:30:00.000Z",
+        "parse": 12,
+        "number": "1,234.5",
+        "originalTime": 1791983636065,
+        "clockDifference": 0.09990233182907104,
+        "string": "Wed Oct 14 2026 09:13:56 GMT-0400 (Eastern Daylight Time)",
+        "temporal": "Europe/Moscow",
+        "calendarAgreement": true
+      }
+    },
+    {
+      "name": "Browser restart plus CDP reload, persisted settings",
+      "early": {
+        "language": "en-US",
+        "languages": [
+          "en-US",
+          "en"
+        ],
+        "zone": "America/New_York",
+        "hours": 7
+      },
+      "navigator": {
+        "language": "en-US",
+        "languages": [
+          "en-US",
+          "en"
+        ]
+      },
+      "zone": "America/New_York",
+      "locale": "en-US",
+      "headerReceivedByServer": "en-US,en;q=0.9",
+      "explicitOptions": {
+        "locale": "de-DE",
+        "zone": "Asia/Tokyo",
+        "hoursTokyo": "21"
+      },
+      "dates": [
+        {
+          "iso": "2026-01-15T12:34:56.789Z",
+          "timestamp": 1768480496789,
+          "offset": 300,
+          "local": [
+            2026,
+            0,
+            15,
+            7,
+            34,
+            56,
+            789,
+            4
+          ],
+          "utc": [
+            2026,
+            0,
+            15,
+            12,
+            34,
+            56,
+            789
+          ]
+        },
+        {
+          "iso": "2026-07-15T12:34:56.789Z",
+          "timestamp": 1784118896789,
+          "offset": 240,
+          "local": [
+            2026,
+            6,
+            15,
+            8,
+            34,
+            56,
+            789,
+            3
+          ],
+          "utc": [
+            2026,
+            6,
+            15,
+            12,
+            34,
+            56,
+            789
+          ]
+        }
+      ],
+      "frames": {
+        "about:blank": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "America/New_York"
+        },
+        "srcdoc": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "America/New_York"
+        },
+        "iframe другой origin": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "America/New_York",
+          "hours": 7
+        },
+        "iframe HTTP": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "America/New_York",
+          "hours": 7
+        },
+        "data:": {
+          "language": "ru-RU",
+          "languages": [
+            "ru-RU",
+            "ru",
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow"
+        },
+        "blob:": {
+          "language": "en-US",
+          "languages": [
+            "en-US",
+            "en"
+          ],
+          "zone": "America/New_York"
+        }
+      },
+      "temporal": {
+        "available": true,
+        "zone": "Europe/Moscow"
+      },
+      "workers": {
+        "dedicated": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        },
+        "service": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        },
+        "shared": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        }
+      },
+      "additionalChecks": {
+        "gap": "2026-03-08T07:30:00.000Z",
+        "overlap": "2026-11-01T05:30:00.000Z",
+        "setter": "2026-03-08T07:30:00.000Z",
+        "parse": 12,
+        "number": "1,234.5",
+        "originalTime": 1791983638349,
+        "clockDifference": 0.20004881918430328,
+        "string": "Wed Oct 14 2026 09:13:58 GMT-0400 (Eastern Daylight Time)",
+        "temporal": "Europe/Moscow",
+        "calendarAgreement": true
+      }
+    },
+    {
+      "name": "German defaults",
+      "languageChecks": [
+        [
+          "NumberFormat",
+          "de-DE",
+          "de-DE"
+        ],
+        [
+          "Collator",
+          "de",
+          "de"
+        ],
+        [
+          "PluralRules",
+          "de",
+          "de"
+        ],
+        [
+          "RelativeTimeFormat",
+          "de-DE",
+          "de-DE"
+        ],
+        [
+          "ListFormat",
+          "de-DE",
+          "de-DE"
+        ],
+        [
+          "Segmenter",
+          "de-DE",
+          "de-DE"
+        ],
+        [
+          "DurationFormat",
+          "de-DE",
+          "de-DE"
+        ]
+      ],
+      "headerReceivedByServer": "de-DE,de;q=0.9"
+    },
+    {
+      "name": "Disabled and reloaded",
+      "early": {
+        "language": "ru-RU",
+        "languages": [
+          "ru-RU",
+          "ru",
+          "en-US",
+          "en"
+        ],
+        "zone": "Europe/Moscow",
+        "hours": 15
+      },
+      "navigator": {
+        "language": "ru-RU",
+        "languages": [
+          "ru-RU",
+          "ru",
+          "en-US",
+          "en"
+        ]
+      },
+      "zone": "Europe/Moscow",
+      "locale": "ru",
+      "headerReceivedByServer": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+      "explicitOptions": {
+        "locale": "de-DE",
+        "zone": "Asia/Tokyo",
+        "hoursTokyo": "21"
+      },
+      "dates": [
+        {
+          "iso": "2026-01-15T12:34:56.789Z",
+          "timestamp": 1768480496789,
+          "offset": -180,
+          "local": [
+            2026,
+            0,
+            15,
+            15,
+            34,
+            56,
+            789,
+            4
+          ],
+          "utc": [
+            2026,
+            0,
+            15,
+            12,
+            34,
+            56,
+            789
+          ]
+        },
+        {
+          "iso": "2026-07-15T12:34:56.789Z",
+          "timestamp": 1784118896789,
+          "offset": -180,
+          "local": [
+            2026,
+            6,
+            15,
+            15,
+            34,
+            56,
+            789,
+            3
+          ],
+          "utc": [
+            2026,
+            6,
+            15,
+            12,
+            34,
+            56,
+            789
+          ]
+        }
+      ],
+      "frames": {
+        "about:blank": {
+          "language": "ru-RU",
+          "languages": [
+            "ru-RU",
+            "ru",
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow"
+        },
+        "iframe HTTP": {
+          "language": "ru-RU",
+          "languages": [
+            "ru-RU",
+            "ru",
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow",
+          "hours": 15
+        },
+        "iframe другой origin": {
+          "language": "ru-RU",
+          "languages": [
+            "ru-RU",
+            "ru",
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow",
+          "hours": 15
+        },
+        "srcdoc": {
+          "language": "ru-RU",
+          "languages": [
+            "ru-RU",
+            "ru",
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow"
+        },
+        "data:": {
+          "language": "ru-RU",
+          "languages": [
+            "ru-RU",
+            "ru",
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow"
+        },
+        "blob:": {
+          "language": "ru-RU",
+          "languages": [
+            "ru-RU",
+            "ru",
+            "en-US",
+            "en"
+          ],
+          "zone": "Europe/Moscow"
+        }
+      },
+      "temporal": {
+        "available": true,
+        "zone": "Europe/Moscow"
+      },
+      "workers": {
+        "service": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        },
+        "dedicated": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        },
+        "shared": {
+          "language": "ru-RU",
+          "zone": "Europe/Moscow",
+          "temporal": {
+            "available": true,
+            "zone": "Europe/Moscow"
+          }
+        }
+      }
+    },
+    {
+      "name": "Popup document and reload button"
+    }
+  ],
+  "stoppedExtensionWorkerStatuses": [
+    "running",
+    "stopping",
+    "stopped"
+  ]
+}
